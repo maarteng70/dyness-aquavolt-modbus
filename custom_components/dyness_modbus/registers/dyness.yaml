@@ -1,0 +1,820 @@
+# Dyness Aquavolt register map
+# Source: Modbus_Protocol_Hybrid_S-V1_15.pdf (DYNESS Modbus Protocol – Hybrid Inverter, V1.15)
+# All addresses are decimal. Real value = raw value / Mult.
+#
+# Register groups:
+#   117-133   AC Port / AC power (voltage, current, frequency, power)
+#   170-176   Battery 1 + inverter state
+#   181-200   Energy counters
+#   213-214   SOC + operate mode
+#   262-278   Utility P1 measure point (second AC side)
+#   2000-2026 BMS information
+#   25243-25278 Operation mode & system settings (RW)
+#   25350-25363 Battery parameters (RW)
+#   27500-27548 EMS manage data (RW)
+
+MISSING:
+    sensor:
+        - sn_code
+        - software_version
+    binary:
+        - discharge_limit_mode
+    select:
+        - grid_standard
+    number:
+        - charging_cutoff_capacity
+        - discharging_cutoff_capacity
+
+SENSOR_DEFINITIONS:
+    # --- Device information ---
+    modbus_protocol_version:
+        register: 0
+        data_type: uint16
+        category: diagnostic
+        enabled_by_default: false
+        icon: "mdi:file-document"
+        scan_interval: low
+    rated_power:
+        register: 1
+        data_type: uint16
+        unit: "W"
+        device_class: power
+        category: diagnostic
+        enabled_by_default: false
+        scan_interval: low
+    ac_output_type:
+        register: 2
+        data_type: uint16
+        category: diagnostic
+        enabled_by_default: false
+        icon: "mdi:transmission-tower"
+        scan_interval: low
+        states:
+            0: "Single phase"
+            1: "Three phase four wire"
+            2: "Three phase three wire"
+            3: "Two phase three wire"
+    serial_number:
+        register: 3
+        count: 11
+        data_type: char
+        category: diagnostic
+        enabled_by_default: true
+        icon: "mdi:barcode"
+        scan_interval: low
+    dsp1_software_version:
+        register: 16
+        data_type: uint16
+        category: diagnostic
+        enabled_by_default: false
+        icon: "mdi:chip"
+        scan_interval: low
+    dsp2_software_version:
+        register: 17
+        data_type: uint16
+        category: diagnostic
+        enabled_by_default: false
+        icon: "mdi:chip"
+        scan_interval: low
+    arm_software_version:
+        register: 19
+        data_type: uint16
+        category: diagnostic
+        enabled_by_default: false
+        icon: "mdi:chip"
+        scan_interval: low
+    dsp_internal_firmware:
+        register: 21
+        count: 6
+        data_type: char
+        category: diagnostic
+        enabled_by_default: false
+        icon: "mdi:chip"
+        scan_interval: low
+    arm_internal_firmware:
+        register: 27
+        count: 6
+        data_type: char
+        category: diagnostic
+        enabled_by_default: false
+        icon: "mdi:chip"
+        scan_interval: low
+    device_hardware_version:
+        register: 33
+        data_type: uint16
+        category: diagnostic
+        enabled_by_default: false
+        icon: "mdi:chip"
+        scan_interval: low
+    manufacture:
+        register: 35
+        count: 8
+        data_type: char
+        category: diagnostic
+        enabled_by_default: true
+        icon: "mdi:factory"
+        scan_interval: low
+    power_ratio:
+        register: 43
+        data_type: uint16
+        category: diagnostic
+        enabled_by_default: false
+        icon: "mdi:calculator"
+        scan_interval: low
+    bms_version:
+        register: 51
+        data_type: uint16
+        category: diagnostic
+        enabled_by_default: false
+        icon: "mdi:battery-check-outline"
+        scan_interval: low
+
+    # --- Running data: Grid ---
+    ac_port_voltage_r:
+        register: 117
+        scale: 0.1
+        unit: "V"
+        device_class: voltage
+        state_class: measurement
+        enabled_by_default: true
+        data_type: uint16
+        precision: 1
+        scan_interval: high
+    ac_port_current_r:
+        register: 118
+        scale: 0.1
+        unit: "A"
+        device_class: current
+        state_class: measurement
+        enabled_by_default: true
+        data_type: uint16
+        precision: 1
+        scan_interval: high
+    ac_port_frequency_r:
+        register: 119
+        scale: 0.01
+        unit: "Hz"
+        device_class: frequency
+        state_class: measurement
+        enabled_by_default: true
+        data_type: uint16
+        precision: 2
+        scan_interval: high
+    ac_port_power_r:
+        register: 120
+        count: 2
+        scale: 1
+        unit: "W"
+        device_class: power
+        state_class: measurement
+        enabled_by_default: true
+        data_type: int32
+        precision: 0
+        scan_interval: high
+    ac_port_power_total:
+        register: 133
+        count: 2
+        scale: 1
+        unit: "W"
+        device_class: power
+        state_class: measurement
+        enabled_by_default: true
+        data_type: int32
+        precision: 0
+        scan_interval: high
+    ac_port_reactive_power:
+        register: 135
+        count: 2
+        scale: 1
+        unit: "var"
+        device_class: reactive_power
+        state_class: measurement
+        enabled_by_default: false
+        data_type: int32
+        precision: 0
+        scan_interval: high
+    ac_port_apparent_power:
+        register: 137
+        count: 2
+        scale: 1
+        unit: "VA"
+        device_class: apparent_power
+        state_class: measurement
+        enabled_by_default: false
+        data_type: uint32
+        precision: 0
+        scan_interval: high
+    ac_port_mode:
+        register: 132
+        data_type: uint16
+        category: diagnostic
+        enabled_by_default: false
+        icon: "mdi:transmission-tower"
+        scan_interval: high
+        states:
+            1: "OK - connected to AC port"
+            2: "Fault"
+
+    # --- Running data: Battery 1 ---
+    battery_voltage:
+        register: 170
+        scale: 0.1
+        unit: "V"
+        device_class: voltage
+        state_class: measurement
+        enabled_by_default: true
+        data_type: uint16
+        precision: 1
+        scan_interval: high
+    battery_current:
+        register: 171
+        scale: 0.1
+        unit: "A"
+        device_class: current
+        state_class: measurement
+        enabled_by_default: true
+        data_type: int16
+        precision: 1
+        scan_interval: high
+    battery_power:
+        register: 172
+        scale: 1
+        unit: "W"
+        device_class: power
+        state_class: measurement
+        enabled_by_default: true
+        data_type: int16
+        precision: 0
+        scan_interval: high
+    battery_mode:
+        register: 173
+        data_type: uint16
+        icon: "mdi:battery-sync"
+        enabled_by_default: true
+        scan_interval: high
+        states:
+            0: "No battery / disconnected"
+            1: "Standby"
+            2: "Discharging"
+            3: "Charging"
+            4: "Waiting for charge"
+            5: "Waiting for discharge"
+
+    # --- Running data: Inverter state ---
+    inverter_state:
+        register: 176
+        data_type: uint16
+        icon: "mdi:state-machine"
+        enabled_by_default: true
+        scan_interval: high
+        states:
+            0: "Wait"
+            1: "On-Grid"
+            2: "Off-Grid"
+            3: "Fault"
+            4: "Flash / Upgrade"
+            5: "Check / Self-test"
+
+    warning_code:
+        register: 174
+        data_type: uint16
+        device_class: problem
+        category: diagnostic
+        enabled_by_default: false
+        icon: "mdi:alert"
+        scan_interval: high
+    safety_country:
+        register: 175
+        data_type: uint16
+        category: diagnostic
+        enabled_by_default: false
+        icon: "mdi:flag"
+        scan_interval: low
+
+    # --- Running data: Energy counters ---
+    pv_energy_total:
+        register: 181
+        count: 2
+        scale: 0.1
+        unit: "kWh"
+        device_class: energy
+        state_class: total_increasing
+        enabled_by_default: true
+        data_type: uint32
+        precision: 1
+        scan_interval: low
+    pv_energy_day:
+        register: 183
+        scale: 0.1
+        unit: "kWh"
+        device_class: energy
+        state_class: total_increasing
+        enabled_by_default: true
+        data_type: uint16
+        precision: 1
+        scan_interval: low
+    energy_to_grid_total:
+        register: 184
+        count: 2
+        scale: 0.1
+        unit: "kWh"
+        device_class: energy
+        state_class: total_increasing
+        enabled_by_default: true
+        data_type: uint32
+        precision: 1
+        scan_interval: low
+    energy_to_grid_day:
+        register: 188
+        scale: 0.1
+        unit: "kWh"
+        device_class: energy
+        state_class: total_increasing
+        enabled_by_default: true
+        data_type: uint16
+        precision: 1
+        scan_interval: low
+    energy_from_grid_total:
+        register: 189
+        count: 2
+        scale: 0.1
+        unit: "kWh"
+        device_class: energy
+        state_class: total_increasing
+        enabled_by_default: true
+        data_type: uint32
+        precision: 1
+        scan_interval: low
+    energy_from_grid_day:
+        register: 191
+        scale: 0.1
+        unit: "kWh"
+        device_class: energy
+        state_class: total_increasing
+        enabled_by_default: true
+        data_type: uint16
+        precision: 1
+        scan_interval: low
+    load_energy_total:
+        register: 192
+        count: 2
+        scale: 0.1
+        unit: "kWh"
+        device_class: energy
+        state_class: total_increasing
+        enabled_by_default: false
+        data_type: uint32
+        precision: 1
+        scan_interval: low
+    load_energy_day:
+        register: 194
+        scale: 0.1
+        unit: "kWh"
+        device_class: energy
+        state_class: total_increasing
+        enabled_by_default: false
+        data_type: uint16
+        precision: 1
+        scan_interval: low
+    battery_charge_energy_total:
+        register: 195
+        count: 2
+        scale: 0.1
+        unit: "kWh"
+        device_class: energy
+        state_class: total_increasing
+        enabled_by_default: true
+        data_type: uint32
+        precision: 1
+        scan_interval: low
+    battery_charge_energy_day:
+        register: 197
+        scale: 0.1
+        unit: "kWh"
+        device_class: energy
+        state_class: total_increasing
+        enabled_by_default: true
+        data_type: uint16
+        precision: 1
+        scan_interval: low
+    battery_discharge_energy_total:
+        register: 198
+        count: 2
+        scale: 0.1
+        unit: "kWh"
+        device_class: energy
+        state_class: total_increasing
+        enabled_by_default: true
+        data_type: uint32
+        precision: 1
+        scan_interval: low
+    battery_discharge_energy_day:
+        register: 200
+        scale: 0.1
+        unit: "kWh"
+        device_class: energy
+        state_class: total_increasing
+        enabled_by_default: true
+        data_type: uint16
+        precision: 1
+        scan_interval: low
+
+    # --- Running data: Diagnostics ---
+    cpld_code:
+        register: 201
+        data_type: uint16
+        category: diagnostic
+        enabled_by_default: false
+        icon: "mdi:alert-circle"
+        scan_interval: low
+
+    # --- Running data extra: Battery 2 & Utility P1 ---
+    battery_voltage_2:
+        register: 262
+        scale: 0.1
+        unit: "V"
+        device_class: voltage
+        state_class: measurement
+        enabled_by_default: false
+        data_type: uint16
+        precision: 1
+        scan_interval: high
+    battery_current_2:
+        register: 263
+        scale: 0.1
+        unit: "A"
+        device_class: current
+        state_class: measurement
+        enabled_by_default: false
+        data_type: int16
+        precision: 1
+        scan_interval: high
+    battery_power_2:
+        register: 264
+        scale: 1
+        unit: "W"
+        device_class: power
+        state_class: measurement
+        enabled_by_default: false
+        data_type: int16
+        precision: 0
+        scan_interval: high
+    battery_mode_2:
+        register: 265
+        data_type: uint16
+        enabled_by_default: false
+        scan_interval: high
+        states:
+            0: "No battery / disconnected"
+            1: "Standby"
+            2: "Discharging"
+            3: "Charging"
+            4: "Waiting for charge"
+            5: "Waiting for discharge"
+
+    # Utility P1 measure point (R phase)
+    utility_p1_voltage:
+        register: 266
+        scale: 0.1
+        unit: "V"
+        device_class: voltage
+        state_class: measurement
+        enabled_by_default: true
+        data_type: uint16
+        precision: 1
+        scan_interval: high
+    utility_p1_current:
+        register: 267
+        scale: 0.1
+        unit: "A"
+        device_class: current
+        state_class: measurement
+        enabled_by_default: true
+        data_type: uint16
+        precision: 1
+        scan_interval: high
+    utility_p1_power:
+        register: 268
+        count: 2
+        scale: 1
+        unit: "W"
+        device_class: power
+        state_class: measurement
+        enabled_by_default: true
+        data_type: int32
+        precision: 0
+        scan_interval: high
+
+    # Utility P1 measure point (S phase)
+    utility_p2_voltage:
+        register: 270
+        scale: 0.1
+        unit: "V"
+        device_class: voltage
+        state_class: measurement
+        enabled_by_default: false
+        data_type: uint16
+        precision: 1
+        scan_interval: high
+    utility_p2_current:
+        register: 271
+        scale: 0.1
+        unit: "A"
+        device_class: current
+        state_class: measurement
+        enabled_by_default: false
+        data_type: uint16
+        precision: 1
+        scan_interval: high
+    utility_p2_power:
+        register: 272
+        count: 2
+        scale: 1
+        unit: "W"
+        device_class: power
+        state_class: measurement
+        enabled_by_default: false
+        data_type: int32
+        precision: 0
+        scan_interval: high
+
+    # Utility P1 measure point (T phase)
+    utility_p3_voltage:
+        register: 274
+        scale: 0.1
+        unit: "V"
+        device_class: voltage
+        state_class: measurement
+        enabled_by_default: false
+        data_type: uint16
+        precision: 1
+        scan_interval: high
+    utility_p3_current:
+        register: 275
+        scale: 0.1
+        unit: "A"
+        device_class: current
+        state_class: measurement
+        enabled_by_default: false
+        data_type: uint16
+        precision: 1
+        scan_interval: high
+    utility_p3_power:
+        register: 276
+        count: 2
+        scale: 1
+        unit: "W"
+        device_class: power
+        state_class: measurement
+        enabled_by_default: false
+        data_type: int32
+        precision: 0
+        scan_interval: high
+
+    utility_frequency:
+        register: 278
+        scale: 0.01
+        unit: "Hz"
+        device_class: frequency
+        state_class: measurement
+        enabled_by_default: true
+        data_type: uint16
+        precision: 2
+        scan_interval: high
+
+    total_utility_power:
+        register: 385
+        count: 2
+        scale: 1
+        unit: "W"
+        device_class: power
+        state_class: measurement
+        enabled_by_default: false
+        data_type: int32
+        precision: 0
+        scan_interval: high
+
+    # --- BMS information ---
+    bms_comm_status:
+        register: 2002
+        data_type: uint16
+        category: diagnostic
+        enabled_by_default: false
+        icon: "mdi:battery-check-outline"
+        scan_interval: high
+        states:
+            0: "NG"
+            1: "OK"
+    bms_soc:
+        register: 2010
+        scale: 1
+        unit: "%"
+        device_class: battery
+        state_class: measurement
+        enabled_by_default: true
+        data_type: uint16
+        precision: 0
+        scan_interval: high
+    bms_soh:
+        register: 2011
+        scale: 1
+        unit: "%"
+        device_class: battery
+        state_class: measurement
+        enabled_by_default: false
+        data_type: uint16
+        precision: 0
+        scan_interval: low
+    battery_strings:
+        register: 2012
+        data_type: uint16
+        unit: "pcs"
+        category: diagnostic
+        enabled_by_default: false
+        icon: "mdi:battery-multiple"
+        scan_interval: low
+    battery_total_voltage:
+        register: 2024
+        scale: 0.1
+        unit: "V"
+        device_class: voltage
+        state_class: measurement
+        # EXPERIMENTAL: Volts only, not kWh capacity — stored_energy calc is approximate
+        category: diagnostic
+        enabled_by_default: false
+        data_type: uint16
+        precision: 1
+        scan_interval: high
+    battery_total_current:
+        register: 2025
+        scale: 0.1
+        unit: "A"
+        device_class: current
+        state_class: measurement
+        enabled_by_default: false
+        data_type: uint16
+        precision: 1
+        scan_interval: high
+    cycle_times:
+        register: 2026
+        data_type: uint16
+        icon: "mdi:counter"
+        state_class: total_increasing
+        category: diagnostic
+        enabled_by_default: true
+        precision: 0
+        scan_interval: low
+
+BINARY_SENSOR_DEFINITIONS:
+    bms_comm_ok:
+        register: 2002
+        data_type: uint16
+        category: diagnostic
+        device_class: connectivity
+        icon: "mdi:check-network-outline"
+        enabled_by_default: false
+        scan_interval: high
+
+SELECT_DEFINITIONS:
+    operation_mode:
+        register: 25243
+        enabled_by_default: true
+        scan_interval: high
+        options:
+            self_use: 0
+            off_grid: 1
+            backup: 2
+            tou: 3
+            battery_priority: 6
+            dynamic_trade: 7
+
+SWITCH_DEFINITIONS:
+    backup_function:
+        register: 25252
+        command_on: 1
+        command_off: 0
+        enabled_by_default: true
+        data_type: uint16
+        scan_interval: high
+        icon: "mdi:home-power-outline"
+
+NUMBER_DEFINITIONS:
+    max_charge_current:
+        register: 25353
+        enabled_by_default: false
+        icon: "mdi:current-ac"
+        min: 0
+        max: 1000
+        step: 1
+        unit: "A"
+        scale: 0.1
+        data_type: uint16
+        scan_interval: high
+    max_discharge_current:
+        register: 25355
+        enabled_by_default: false
+        icon: "mdi:current-ac"
+        min: 0
+        max: 1000
+        step: 1
+        unit: "A"
+        scale: 0.1
+        data_type: uint16
+        scan_interval: high
+    charge_to_soc:
+        register: 25362
+        enabled_by_default: false
+        icon: "mdi:battery-sync-outline"
+        min: 0
+        max: 100
+        step: 1
+        unit: "%"
+        scale: 1
+        data_type: uint16
+        scan_interval: high
+    ems_power_set:
+        register: 27512
+        enabled_by_default: false
+        icon: "mdi:battery-charging-outline"
+        min: 0
+        max: 60000
+        step: 100
+        unit: "W"
+        scale: 1
+        data_type: uint16
+        scan_interval: high
+
+BUTTON_DEFINITIONS:
+    reset_inverter:
+        register: 25220
+        command: 0
+        icon: "mdi:restart"
+        category: diagnostic
+        enabled_by_default: false
+        data_type: uint16
+    start_ac_port_connection:
+        register: 25218
+        command: 0
+        icon: "mdi:power-on"
+        category: diagnostic
+        enabled_by_default: false
+        data_type: uint16
+    stop_ac_port_connection:
+        register: 25219
+        command: 0
+        icon: "mdi:power-off"
+        category: diagnostic
+        enabled_by_default: false
+        data_type: uint16
+
+VERSION_SENSOR_DEFINITIONS:
+    firmware_version:
+        key: firmware_version
+        unit: null
+        icon: "mdi:chip"
+        category: diagnostic
+        enabled_by_default: true
+        mode: dsp_arm_bms
+        dependency_keys:
+            dsp1: dsp1_software_version
+            dsp2: dsp2_software_version
+            arm: arm_software_version
+            bms: bms_version
+
+EFFICIENCY_SENSOR_DEFINITIONS:
+    round_trip_efficiency_total:
+        key: round_trip_efficiency_total
+        unit: "%"
+        icon: "mdi:percent"
+        state_class: measurement
+        mode: round_trip
+        dependency_keys:
+            charge: battery_charge_energy_total
+            discharge: battery_discharge_energy_total
+
+STORED_ENERGY_SENSOR_DEFINITIONS:
+    stored_energy:
+        key: stored_energy
+        unit: kWh
+        device_class: energy
+        state_class: total
+        dependency_keys:
+            soc: bms_soc
+            capacity: battery_total_voltage
+
+CYCLE_SENSOR_DEFINITIONS:
+    battery_cycle_count_calc:
+        key: battery_cycle_count_calc
+        icon: "mdi:counter"
+        category: diagnostic
+        state_class: measurement
+        dependency_keys:
+            discharge: battery_discharge_energy_total
+
+SOLAR_POWER_SENSOR_DEFINITIONS:
+    solar_power_total:
+        key: solar_power_total
+        unit: W
+        icon: "mdi:solar-power"
+        device_class: power
+        state_class: measurement

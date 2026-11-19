@@ -182,6 +182,17 @@ SENSOR_DEFINITIONS:
         data_type: power_ratio
         precision: 0
         scan_interval: high
+    ac_port_backup_power:
+        register: 143
+        count: 2
+        scale: 1
+        unit: "W"
+        device_class: power
+        state_class: measurement
+        enabled_by_default: true
+        data_type: power_ratio
+        precision: 0
+        scan_interval: high
     ac_port_reactive_power:
         register: 135
         count: 2
@@ -776,7 +787,7 @@ SELECT_DEFINITIONS:
 
     ems_power_mode:
         register: 27511
-        enabled_by_default: false
+        enabled_by_default: true
         scan_interval: high
         category: config
         icon: "mdi:battery-charging-outline"
@@ -841,7 +852,7 @@ NUMBER_DEFINITIONS:
         scan_interval: high
     ems_power_set:
         register: 27512
-        enabled_by_default: false
+        enabled_by_default: true
         icon: "mdi:battery-charging-outline"
         min: 0
         max: 60000

@@ -80,6 +80,7 @@
       "ac_port_frequency_phase1": { "name": "AC Port Frequency (Phase 1)" },
       "ac_port_power_phase1": { "name": "AC Port Power (Phase 1)" },
       "ac_port_power_total": { "name": "AC Active Power" },
+      "ac_port_backup_power": { "name": "AC Port Backup Power" },
       "ac_port_reactive_power": { "name": "AC Reactive Power" },
       "ac_port_apparent_power": { "name": "AC Apparent Power" },
       "ac_port_mode": { "name": "AC Port Mode" },

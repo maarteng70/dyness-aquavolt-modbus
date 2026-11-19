@@ -155,6 +155,22 @@ class DynessModbusClient:
             reg_val = regs[0]
             return bool((reg_val >> bit_index) & 1)
 
+        if data_type == "power_ratio":
+            # The device sends 4 bytes (2 registers). The first 2 bytes (register 0)
+            # are ignored. The second register contains the signed power value.
+            # Actual power = register value × Power Ratio register (reg 43).
+            # With ratio 1, the raw int16 value is returned directly.
+            if len(regs) < 2:
+                _LOGGER.warning(
+                    "Expected 2 registers for power_ratio at register %d (0x%04X), got %s",
+                    register,
+                    register,
+                    len(regs),
+                )
+                return None
+            val = regs[1]
+            return val - 0x10000 if val >= 0x8000 else val
+
         raise ValueError(f"Unsupported data_type: {data_type}")
 
     async def async_read_holding_registers(

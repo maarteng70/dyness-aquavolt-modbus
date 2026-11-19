@@ -4,11 +4,12 @@ This is a custom HACS-compatible integration for Dyness Aquavolt battery systems
 
 ### Requirements
 
-- A configured **Modbus RTU to Modbus TCP bridge** connected to the inverter's EMS RS485 port
-- Alternatively: Ethernet Connection to inverter with Modbus TCP support
+- A configured **Modbus RTU to Modbus TCP bridge** connected to the inverter's EMS RS485 port, eg, a ew41
+- connect that bridge, it needs power and pin 5,6 from the rs485 interface. 
+
 - The IP address, port of the Modbus TCP (usually port 502) and Unit ID (also called Slave ID, default 1).
 - Home Assistant Core 2025.9 or later
-- HACS installed
+- HACS installed in HA
 
 ### Features
 
@@ -32,7 +33,7 @@ This is a custom HACS-compatible integration for Dyness Aquavolt battery systems
 ### Installation
 
 1. Add this repository to HACS **Integrations → Custom repositories**
-2. Install the "Dyness Aquavolt Modbus" integration
+2. Install the "Dyness Aquavolt Modbus" integration https://github.com/maarteng70/dyness-aquavolt-modbus
 3. Restart Home Assistant
 4. Add the integration via **Settings → Devices & Services**
 5. Enter the connection details:
@@ -57,11 +58,32 @@ Register definitions live in `custom_components/dyness_modbus/registers/dyness.y
 Key register groups:
 - **100-200**: PV, AC Port, Battery running data, Energy counters
 - **213-214**: Battery SOC, Operate Mode
-- **262-278**: Utility P1 measure point (grid supply side)
+- **262-278**: Utility measure point (grid supply side)
 - **2000-2026**: BMS information
 - **25200-25522**: Operation mode and system settings (RW)
 - **25350-25363**: Battery parameters (RW)
 - **27500-27548**: EMS manage data (RW)
+
+### Power Ratio Handling
+
+The Dyness inverter reports power registers (120, 125, 130, 133, 135, 137, etc.) as 4-byte values where:
+- The **first 2 bytes** (first register) are ignored
+- The **second 2 bytes** (second register) contain the signed power value
+
+These registers use the custom `power_ratio` data type. Actual power = register value × Power Ratio coefficient (register 43). With ratio 1, the raw int16 value is returned directly.
+
+### Phase Naming
+
+AC Port and Utility phases are named **Phase 1, Phase 2, Phase 3** (not R, S, T).
+
+### EMS Power Modes
+
+The `ems_power_mode` select (register 27511) supports these modes:
+- **Charge-BAT** (0x000B / 11): Force battery to charge at set power
+- **Discharge-BAT** (0x000C / 12): Force battery to discharge at set power
+- Plus standard modes: Auto, Charge PV, Discharge+PV, Import AC, Export AC, Conserve, Off Grid, Battery Standby, Buy Power, Sell Power
+
+When Charge-BAT or Discharge-BAT is selected, set the power value via `ems_power_set` (register 27512) in Watts.
 
 ### Home Battery Control (Node-RED) Compatibility
 
@@ -187,6 +209,5 @@ The **Utility P1** measure point (registers 266-278) remains named "Utility P1" 
 - Scaling: real value = raw value / Mult (e.g., voltage with Mult 10 means raw 2305 = 230.5 V)
 - `battery_total_voltage` (reg 2024) is marked **experimental** — it reports Volts only, not kWh capacity. The `stored_energy` calculated sensor using it is approximate.
 - `battery_cycle_count_calc` now uses only discharge energy (no capacity reference).
-- The integration supports Modbus TCP via RS485-to-TCP gateway
-- For access to registers in the 42000+ range (if applicable), the inverter must be set to RS485 control mode
+- The integration supports Modbus TCP via RS485-to-TCP gateway you need to get such a device seperate, ew41 or lilygo comes to mind. 
 - Schedule Time format: start and end are entered as HHMM 24-hour integers

@@ -1,5 +1,9 @@
 # Dyness Aquavolt Battery - Home Assistant Integration
 
+#BURNS YOUR HOUSE DOWN 
+This software can and will burn your house down. it is pre-release stuff. 
+
+
 This is a custom HACS-compatible integration for Dyness Aquavolt battery systems, using **Modbus TCP** via an RS485-to-WiFi gateway or direct Ethernet. No YAML required. The integration provides sensors, switches and number controls to monitor and manage the battery directly from Home Assistant.
 
 ### Requirements

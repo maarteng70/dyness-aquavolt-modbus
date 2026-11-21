@@ -320,7 +320,11 @@
       },
       "feed_power_para_RO": { "name": "Feed Power Para (RO)" },
       "batt_charge_curr_max_RO": { "name": "Battery Charge Current Max (RO)" },
-      "batt_discharge_curr_max_RO": { "name": "Battery Discharge Current Max (RO)" }
+      "batt_discharge_curr_max_RO": { "name": "Battery Discharge Current Max (RO)" },
+      "router_ssid_RO": { "name": "Router SSID (RO)" },
+      "router_password_RO": { "name": "Router Password (RO)" },
+      "router_encryption_RO": { "name": "Router Encryption (RO)" },
+      "manufacturer_RO": { "name": "Manufacturer (RO)" }
     },
     "button": {
       "reset_inverter": { "name": "Reset Inverter" },

@@ -1,10 +1,10 @@
 {
   "domain": "dyness_modbus",
   "name": "Dyness Aquavolt Modbus",
-  "version": "2026.11.4",
+  "version": "2026.11.5",
   "config_flow": true,
-  "documentation": "https://github.com/dyness/dyness_modbus",
+  "documentation": "https://github.com/maarteng70/dyness-aquavolt-modbus",
   "dependencies": ["modbus"],
-  "codeowners": [],
+  "codeowners": ["@maarteng70"],
   "iot_class": "local_polling"
 }

@@ -993,7 +993,8 @@ SENSOR_DEFINITIONS:
         icon: "mdi:counter"
         state_class: total_increasing
         category: diagnostic
-        enabled_by_default: true
+        enabled_by_default: false
+        # EXPERIMENTAL: Register timed out in testing
         precision: 0
         scan_interval: low
         
@@ -1017,6 +1018,45 @@ SENSOR_DEFINITIONS:
 
 
 
+
+
+    # --- RW Config registers (EXPERIMENTAL - timed out in testing) ---
+    router_ssid_RO:
+        register: 25000
+        count: 20
+        data_type: char
+        category: diagnostic
+        enabled_by_default: false
+        # EXPERIMENTAL: Register timed out in testing
+        icon: "mdi:router"
+        scan_interval: low
+    router_password_RO:
+        register: 25024
+        count: 20
+        data_type: char
+        category: diagnostic
+        enabled_by_default: false
+        # EXPERIMENTAL: Register timed out in testing
+        icon: "mdi:router"
+        scan_interval: low
+    router_encryption_RO:
+        register: 25064
+        count: 1
+        data_type: char
+        category: diagnostic
+        enabled_by_default: false
+        # EXPERIMENTAL: Register timed out in testing
+        icon: "mdi:router"
+        scan_interval: low
+    manufacturer_RO:
+        register: 25128
+        count: 4
+        data_type: char
+        category: diagnostic
+        enabled_by_default: false
+        # EXPERIMENTAL: Register timed out in testing
+        icon: "mdi:router"
+        scan_interval: low
 
 BINARY_SENSOR_DEFINITIONS:
     bms_comm_ok:
@@ -1120,6 +1160,7 @@ NUMBER_DEFINITIONS:
     port_number_1:
         register: 25100
         enabled_by_default: false
+        # EXPERIMENTAL: Register timed out in testing
         icon: "mdi:router"
         min: 1
         max: 65535
@@ -1131,6 +1172,7 @@ NUMBER_DEFINITIONS:
     modbus_address:
         register: 25127
         enabled_by_default: false
+        # EXPERIMENTAL: Register timed out in testing
         icon: "mdi:router"
         min: 1
         max: 247
@@ -1143,6 +1185,7 @@ NUMBER_DEFINITIONS:
         register: 25132
         count: 2
         enabled_by_default: false
+        # EXPERIMENTAL: Register timed out in testing
         icon: "mdi:router"
         min: 9600
         max: 115200

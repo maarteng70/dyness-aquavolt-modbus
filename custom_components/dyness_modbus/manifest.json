@@ -1,7 +1,7 @@
 {
   "domain": "dyness_modbus",
   "name": "Dyness Aquavolt Modbus",
-  "version": "2026.11.5",
+  "version": "2026.11.6",
   "config_flow": true,
   "documentation": "https://github.com/maarteng70/dyness-aquavolt-modbus",
   "dependencies": ["modbus"],

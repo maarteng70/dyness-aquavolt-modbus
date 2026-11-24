@@ -281,17 +281,7 @@
           "sell_power": "Sell Power",
           "charge_bat": "Charge-BAT",
           "discharge_bat": "Discharge-BAT"
-        }
-      }
-    },
-    "switch": {
-      "backup_function": { "name": "Backup Function" }
-    },
-    "number": {
-      "max_charge_current": { "name": "Max Charge Current" },
-      "max_discharge_current": { "name": "Max Discharge Current" },
-      "charge_to_soc": { "name": "Charge to SoC" },
-      "ems_power_set": { "name": "EMS Power Set" },
+        },
       "ems_power_set_RO": { "name": "EMS Power Set (RO)" },
       "ems_power_mode_RO": { "name": "EMS Power Mode (RO)", "state": {
           "255": "Stopped",
@@ -325,6 +315,15 @@
       "router_password_RO": { "name": "Router Password (RO)" },
       "router_encryption_RO": { "name": "Router Encryption (RO)" },
       "manufacturer_RO": { "name": "Manufacturer (RO)" }
+    },
+    "switch": {
+      "backup_function": { "name": "Backup Function" }
+    },
+    "number": {
+      "max_charge_current": { "name": "Max Charge Current" },
+      "max_discharge_current": { "name": "Max Discharge Current" },
+      "charge_to_soc": { "name": "Charge to SoC" },
+      "ems_power_set": { "name": "EMS Power Set" }
     },
     "button": {
       "reset_inverter": { "name": "Reset Inverter" },

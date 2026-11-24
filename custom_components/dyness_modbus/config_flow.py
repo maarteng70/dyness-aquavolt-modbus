@@ -32,6 +32,7 @@ SCHEMA_HOST_BASE = vol.Schema(
 SCHEMA_POLLING = vol.Schema(
     {
         vol.Required("high"): vol.All(vol.Coerce(int), vol.Clamp(min=1, max=3600)),
+        vol.Required("medium"): vol.All(vol.Coerce(int), vol.Clamp(min=1, max=3600)),
         vol.Required("low"): vol.All(vol.Coerce(int), vol.Clamp(min=1, max=3600)),
     }
 )
@@ -182,7 +183,7 @@ class DynessOptionsFlow(config_entries.OptionsFlow):
             key: normalized_options.get(
                 key, config.data.get(key, DEFAULT_SCAN_INTERVALS[key])
             )
-            for key in ("high", "low")
+            for key in ("high", "medium", "low")
         }
 
         lowest = min((user_input or defaults).values())

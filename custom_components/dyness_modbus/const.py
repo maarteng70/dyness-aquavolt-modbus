@@ -12,8 +12,9 @@ DEFAULT_UNIT_ID = 1  # Default Modbus Unit ID (slave ID), factory default is 01H
 
 # General scan intervals (in seconds)
 DEFAULT_SCAN_INTERVALS = {
-    "high": 10,      # fast-changing sensors (power, voltage, current, SOC, state)
-    "low": 60,       # slower-changing sensors (energy totals, diagnostics, firmware)
+    "high": 10,       # fast-changing sensors (power, voltage, current, SOC, state)
+    "medium": 30,     # medium-changing sensors (power measurements, battery power)
+    "low": 60,        # slower-changing sensors (energy totals, diagnostics, firmware)
 }
 
 # Supported device versions (single model for Aquavolt)

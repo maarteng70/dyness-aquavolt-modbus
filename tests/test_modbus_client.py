@@ -1,7 +1,38 @@
 import sys
 from pathlib import Path
+from types import ModuleType
+from unittest.mock import MagicMock
+
+import importlib.machinery
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
+
+
+def _mock_module(name, **attrs):
+    """Create a ModuleType with a proper __spec__ so pytest introspection works."""
+    mod = ModuleType(name)
+    mod.__spec__ = importlib.machinery.ModuleSpec(name, None)
+    for k, v in attrs.items():
+        setattr(mod, k, v)
+    sys.modules[name] = mod
+    return mod
+
+
+# Mock homeassistant modules before importing modbus_client, because
+# custom_components/dyness_modbus/__init__.py imports homeassistant which
+# is not installed in this test environment.
+_mock_module("homeassistant")
+_mock_module("homeassistant.components")
+_mock_module("homeassistant.components.modbus", async_get_unit=MagicMock())
+_mock_module(
+    "homeassistant.config_entries", ConfigEntry=MagicMock()
+)
+_mock_module("homeassistant.core", HomeAssistant=MagicMock())
+_mock_module("modbus_connection", ModbusTcpParams=MagicMock())
+_mock_module("homeassistant.helpers.entity", Entity=MagicMock())
+_mock_module(
+    "homeassistant.helpers.update_coordinator", DataUpdateCoordinator=MagicMock()
+)
 
 from custom_components.dyness_modbus.helpers.modbus_client import DynessModbusClient
 

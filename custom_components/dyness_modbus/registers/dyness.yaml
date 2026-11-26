@@ -1029,12 +1029,12 @@ SENSOR_DEFINITIONS:
     register: 27512
     enabled_by_default: true
     icon: mdi:battery-charging-outline
-    min: 0
-    max: 60000
-    step: 100
+    min: -2500
+    max: 2500
+    step: 50
     unit: W
     scale: 1
-    data_type: uint16
+    data_type: int16
     scan_interval: medium
     description: EMS Power Set
   router_ssid_RO:
@@ -1171,6 +1171,16 @@ SENSOR_DEFINITIONS:
       2: Force Off
       3: Emergency
 BINARY_SENSOR_DEFINITIONS:
+  modbus_connection:
+    register: 2002
+    data_type: uint16
+    bit_index: 0
+    category: diagnostic
+    device_class: connectivity
+    icon: mdi:check-network-outline
+    enabled_by_default: false
+    scan_interval: high
+    description: Modbus Connection
   bms_comm_ok:
     register: 2002
     data_type: uint16
@@ -1340,12 +1350,13 @@ VERSION_SENSOR_DEFINITIONS:
     icon: mdi:chip
     category: diagnostic
     enabled_by_default: true
-    mode: dsp_arm_bms
+    mode: dsp_arm_bms_modbus
     dependency_keys:
       dsp1: dsp1_software_version
       dsp2: dsp2_software_version
       arm: arm_software_version
       bms: bms_version
+      modbus: modbus_protocol_version
 EFFICIENCY_SENSOR_DEFINITIONS:
   round_trip_efficiency_total:
     key: round_trip_efficiency_total

@@ -1,12 +1,18 @@
 """JSON validation tests for Dyness Aquavolt Modbus integration.
 
 Tests that all JSON files in the project are valid JSON and can be parsed.
+Also validates that all register definitions have corresponding translations.
 """
 
 import json
 import os
 import pytest
 from pathlib import Path
+
+try:
+    import yaml
+except ImportError:
+    yaml = None
 
 
 def find_json_files(root_dir: str) -> list[Path]:
@@ -90,6 +96,129 @@ def test_translation_files_have_required_structure():
         assert 'name' in sensor_t[key], f"Missing 'name' for {key}"
         if 'state' in sensor_t[key]:
             assert isinstance(sensor_t[key]['state'], dict), f"'state' for {key} must be a dict"
+
+
+def test_all_register_definitions_have_translations():
+    """Test that all register definitions in dyness.yaml have corresponding translations in en.json."""
+    if yaml is None:
+        pytest.skip("PyYAML not installed, skipping register translation test")
+
+    project_root = Path(__file__).resolve().parents[1]
+    yaml_file = project_root / "custom_components" / "dyness_modbus" / "registers" / "dyness.yaml"
+    en_file = project_root / "custom_components" / "dyness_modbus" / "translations" / "en.json"
+
+    assert yaml_file.exists(), f"Register definitions file not found: {yaml_file}"
+    assert en_file.exists(), f"Translation file not found: {en_file}"
+
+    # Load YAML register definitions
+    with open(yaml_file, 'r', encoding='utf-8') as f:
+        yaml_data = yaml.safe_load(f)
+
+    # Load translation file
+    with open(en_file, 'r', encoding='utf-8') as f:
+        translations = json.load(f)
+
+    entity_t = translations.get('entity', {})
+
+    # Map YAML sections to translation sections
+    section_mapping = {
+        'SENSOR_DEFINITIONS': 'sensor',
+        'BINARY_SENSOR_DEFINITIONS': 'binary_sensor',
+        'SELECT_DEFINITIONS': 'select',
+        'SWITCH_DEFINITIONS': 'switch',
+        'NUMBER_DEFINITIONS': 'number',
+        'BUTTON_DEFINITIONS': 'button',
+    }
+
+    errors = []
+
+    for yaml_section, trans_section in section_mapping.items():
+        definitions = yaml_data.get(yaml_section, {})
+        if not isinstance(definitions, dict):
+            continue
+
+        trans_keys = entity_t.get(trans_section, {})
+        if not isinstance(trans_keys, dict):
+            errors.append(f"Missing translation section 'entity.{trans_section}' in en.json")
+            continue
+
+        for key, definition in definitions.items():
+            if key not in trans_keys:
+                reg = definition.get("register", "unknown")
+                errors.append(f"Missing translation 'entity.{trans_section}.{key}' (register {reg})")
+
+    if errors:
+        pytest.fail(f"Register definitions missing translations:\n" + "\n".join(errors))
+
+
+def test_no_orphan_translations():
+    """Test that all translation keys correspond to existing register definitions."""
+    if yaml is None:
+        pytest.skip("PyYAML not installed, skipping orphan translation test")
+
+    project_root = Path(__file__).resolve().parents[1]
+    yaml_file = project_root / "custom_components" / "dyness_modbus" / "registers" / "dyness.yaml"
+    en_file = project_root / "custom_components" / "dyness_modbus" / "translations" / "en.json"
+
+    assert yaml_file.exists(), f"Register definitions file not found: {yaml_file}"
+    assert en_file.exists(), f"Translation file not found: {en_file}"
+
+    # Load YAML register definitions
+    with open(yaml_file, 'r', encoding='utf-8') as f:
+        yaml_data = yaml.safe_load(f)
+
+    # Load translation file
+    with open(en_file, 'r', encoding='utf-8') as f:
+        translations = json.load(f)
+
+    entity_t = translations.get('entity', {})
+
+    # Collect all YAML definition keys per section
+    yaml_keys_per_section = {}
+    section_mapping = {
+        'SENSOR_DEFINITIONS': 'sensor',
+        'BINARY_SENSOR_DEFINITIONS': 'binary_sensor',
+        'SELECT_DEFINITIONS': 'select',
+        'SWITCH_DEFINITIONS': 'switch',
+        'NUMBER_DEFINITIONS': 'number',
+        'BUTTON_DEFINITIONS': 'button',
+    }
+
+    for yaml_section, trans_section in section_mapping.items():
+        definitions = yaml_data.get(yaml_section, {})
+        if isinstance(definitions, dict):
+            yaml_keys_per_section[trans_section] = set(definitions.keys())
+        else:
+            yaml_keys_per_section[trans_section] = set()
+
+    errors = []
+
+    # Known computed sensors that don't have register definitions
+    # These are derived from other sensors, not read from Modbus registers
+    computed_sensor_keys = {
+        'firmware_version',
+        'round_trip_efficiency_total',
+        'stored_energy',
+        'solar_power_total',
+        'battery_cycle_count_calc',
+    }
+
+    for trans_section, trans_keys in entity_t.items():
+        if trans_section not in yaml_keys_per_section:
+            # Unknown section in translations (e.g., "config" or "options" under entity)
+            continue
+        yaml_keys = yaml_keys_per_section[trans_section]
+        if not isinstance(trans_keys, dict):
+            continue
+        for key in trans_keys:
+            # Skip computed sensors that don't have register definitions
+            if trans_section == 'sensor' and key in computed_sensor_keys:
+                continue
+            if key not in yaml_keys:
+                errors.append(f"Orphan translation 'entity.{trans_section}.{key}' has no corresponding register definition")
+
+    if errors:
+        pytest.fail(f"Orphan translations found (no register definition):\n" + "\n".join(errors))
 
 
 if __name__ == '__main__':

@@ -380,7 +380,14 @@ class DynessVersionSensor(DynessCalculatedSensor):
 
     def calculate_value(self, raw_values: dict):
         mode = self.definition.get("mode")
-        if mode in ("dsp_arm_bms", "ems_vms_bms"):
+        if mode == "dsp_arm_bms_modbus":
+            dsp1_raw = int(raw_values.get("dsp1", 0))
+            dsp2_raw = int(raw_values.get("dsp2", 0))
+            arm_raw = int(raw_values.get("arm", 0))
+            bms_raw = int(raw_values.get("bms", 0))
+            modbus_raw = int(raw_values.get("modbus", 0))
+            return f"{dsp1_raw}.{dsp2_raw}.{arm_raw}-{bms_raw}.{modbus_raw}"
+        elif mode in ("dsp_arm_bms", "ems_vms_bms"):
             dsp1_raw = int(raw_values.get("dsp1", 0))
             dsp2_raw = int(raw_values.get("dsp2", 0))
             arm_raw = int(raw_values.get("arm", 0))

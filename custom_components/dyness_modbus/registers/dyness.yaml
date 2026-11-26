@@ -2,11 +2,11 @@ MISSING:
   sensor:
   - sn_code
   - software_version
-  binary:
+binary:
   - discharge_limit_mode
-  select:
+select:
   - grid_standard
-  number:
+number:
   - charging_cutoff_capacity
   - discharging_cutoff_capacity
 SENSOR_DEFINITIONS:
@@ -17,6 +17,7 @@ SENSOR_DEFINITIONS:
     enabled_by_default: false
     icon: mdi:file-document
     scan_interval: low
+    description: Modbus protocol version
   rated_power:
     register: 1
     data_type: uint16
@@ -25,6 +26,7 @@ SENSOR_DEFINITIONS:
     category: diagnostic
     enabled_by_default: false
     scan_interval: low
+    description: Rated power of the battery
   ac_output_type:
     register: 2
     data_type: uint16
@@ -32,11 +34,7 @@ SENSOR_DEFINITIONS:
     enabled_by_default: false
     icon: mdi:transmission-tower
     scan_interval: low
-    states:
-      0: Single phase
-      1: Three phase four wire
-      2: Three phase three wire
-      3: Two phase three wire
+    description: AC output type
   serial_number:
     register: 3
     count: 11
@@ -45,6 +43,7 @@ SENSOR_DEFINITIONS:
     enabled_by_default: true
     icon: mdi:barcode
     scan_interval: low
+    description: Serial number of the device
   dsp1_software_version:
     register: 16
     data_type: uint16
@@ -52,6 +51,7 @@ SENSOR_DEFINITIONS:
     enabled_by_default: false
     icon: mdi:chip
     scan_interval: low
+    description: DSP1 software version
   dsp2_software_version:
     register: 17
     data_type: uint16
@@ -59,6 +59,7 @@ SENSOR_DEFINITIONS:
     enabled_by_default: false
     icon: mdi:chip
     scan_interval: low
+    description: DSP2 software version
   arm_software_version:
     register: 19
     data_type: uint16
@@ -66,6 +67,7 @@ SENSOR_DEFINITIONS:
     enabled_by_default: false
     icon: mdi:chip
     scan_interval: low
+    description: ARM software version
   dsp_internal_firmware:
     register: 21
     count: 6
@@ -74,14 +76,15 @@ SENSOR_DEFINITIONS:
     enabled_by_default: false
     icon: mdi:chip
     scan_interval: low
+    description: DSP internal firmware version
   arm_internal_firmware:
     register: 27
     count: 6
     data_type: char
     category: diagnostic
     enabled_by_default: false
-    icon: mdi:chip
     scan_interval: low
+    description: ARM internal firmware version
   device_hardware_version:
     register: 33
     data_type: uint16
@@ -89,6 +92,7 @@ SENSOR_DEFINITIONS:
     enabled_by_default: false
     icon: mdi:chip
     scan_interval: low
+    description: Device hardware version
   manufacture:
     register: 35
     count: 8
@@ -97,6 +101,7 @@ SENSOR_DEFINITIONS:
     enabled_by_default: true
     icon: mdi:factory
     scan_interval: low
+    description: Manufacturer name
   power_ratio:
     register: 43
     data_type: uint16
@@ -104,6 +109,7 @@ SENSOR_DEFINITIONS:
     enabled_by_default: false
     icon: mdi:calculator
     scan_interval: low
+    description: Power ratio
   bms_version:
     register: 51
     data_type: uint16
@@ -111,6 +117,7 @@ SENSOR_DEFINITIONS:
     enabled_by_default: false
     icon: mdi:battery-check-outline
     scan_interval: low
+    description: BMS version
   ac_port_voltage_phase1:
     register: 117
     scale: 0.1
@@ -121,6 +128,7 @@ SENSOR_DEFINITIONS:
     data_type: uint16
     precision: 1
     scan_interval: medium
+    description: AC Port Voltage (Phase 1)
   ac_port_current_phase1:
     register: 118
     scale: 0.1
@@ -131,6 +139,7 @@ SENSOR_DEFINITIONS:
     data_type: uint16
     precision: 1
     scan_interval: medium
+    description: AC Port Current (Phase 1)
   ac_port_frequency_phase1:
     register: 119
     scale: 0.01
@@ -141,6 +150,7 @@ SENSOR_DEFINITIONS:
     data_type: uint16
     precision: 2
     scan_interval: medium
+    description: AC Port Frequency (Phase 1)
   ac_port_power_phase1:
     register: 120
     scale: 1
@@ -151,6 +161,7 @@ SENSOR_DEFINITIONS:
     data_type: int16
     precision: 0
     scan_interval: medium
+    description: AC Port Power (Phase 1)
   ac_port_power_total:
     register: 133
     scale: 1
@@ -161,6 +172,7 @@ SENSOR_DEFINITIONS:
     data_type: int16
     precision: 0
     scan_interval: high
+    description: AC Active Power
   ac_port_backup_power:
     register: 143
     scale: 1
@@ -171,6 +183,7 @@ SENSOR_DEFINITIONS:
     data_type: int16
     precision: 0
     scan_interval: high
+    description: AC Port Backup Power
   ac_port_reactive_power:
     register: 135
     scale: 1
@@ -181,6 +194,7 @@ SENSOR_DEFINITIONS:
     data_type: int16
     precision: 0
     scan_interval: medium
+    description: AC Reactive Power
   ac_port_apparent_power:
     register: 137
     scale: 1
@@ -191,6 +205,7 @@ SENSOR_DEFINITIONS:
     data_type: int16
     precision: 0
     scan_interval: medium
+    description: AC Apparent Power
   ac_port_mode:
     register: 132
     data_type: uint16
@@ -198,6 +213,7 @@ SENSOR_DEFINITIONS:
     enabled_by_default: false
     icon: mdi:transmission-tower
     scan_interval: medium
+    description: AC Port Mode
     states:
       1: OK - connected to AC port
       2: Fault
@@ -211,6 +227,7 @@ SENSOR_DEFINITIONS:
     data_type: uint16
     precision: 1
     scan_interval: medium
+    description: AC Port Voltage (Phase 2)
   ac_port_current_phase2:
     register: 123
     scale: 0.1
@@ -221,6 +238,7 @@ SENSOR_DEFINITIONS:
     data_type: uint16
     precision: 1
     scan_interval: medium
+    description: AC Port Current (Phase 2)
   ac_port_frequency_phase2:
     register: 124
     scale: 0.01
@@ -231,6 +249,7 @@ SENSOR_DEFINITIONS:
     data_type: uint16
     precision: 2
     scan_interval: medium
+    description: AC Port Frequency (Phase 2)
   ac_port_power_phase2:
     register: 125
     scale: 1
@@ -241,6 +260,7 @@ SENSOR_DEFINITIONS:
     data_type: int16
     precision: 0
     scan_interval: medium
+    description: AC Port Power (Phase 2)
   ac_port_voltage_phase3:
     register: 127
     scale: 0.1
@@ -251,6 +271,7 @@ SENSOR_DEFINITIONS:
     data_type: uint16
     precision: 1
     scan_interval: medium
+    description: AC Port Voltage (Phase 3)
   ac_port_current_phase3:
     register: 128
     scale: 0.1
@@ -261,6 +282,7 @@ SENSOR_DEFINITIONS:
     data_type: uint16
     precision: 1
     scan_interval: medium
+    description: AC Port Current (Phase 3)
   ac_port_frequency_phase3:
     register: 129
     scale: 0.01
@@ -271,6 +293,7 @@ SENSOR_DEFINITIONS:
     data_type: uint16
     precision: 2
     scan_interval: medium
+    description: AC Port Frequency (Phase 3)
   ac_port_power_phase3:
     register: 130
     scale: 1
@@ -281,6 +304,7 @@ SENSOR_DEFINITIONS:
     data_type: int16
     precision: 0
     scan_interval: medium
+    description: AC Port Power (Phase 3)
   ems_power_set_RO:
     register: 27512
     scale: 1
@@ -292,6 +316,7 @@ SENSOR_DEFINITIONS:
     data_type: uint16
     precision: 0
     scan_interval: medium
+    description: EMS Power Set (RO)
   ems_power_mode_RO:
     register: 27511
     data_type: uint16
@@ -299,6 +324,7 @@ SENSOR_DEFINITIONS:
     enabled_by_default: false
     icon: mdi:battery-charging-outline
     scan_interval: medium
+    description: EMS Power Mode (RO)
     states:
       255: Stopped
       1: Auto
@@ -320,6 +346,7 @@ SENSOR_DEFINITIONS:
     enabled_by_default: false
     icon: mdi:cog
     scan_interval: medium
+    description: Operation Mode (RO)
     states:
       0: Self Use
       1: Off Grid
@@ -338,6 +365,7 @@ SENSOR_DEFINITIONS:
     data_type: uint16
     precision: 0
     scan_interval: medium
+    description: Feed Power Para (RO)
   batt_charge_curr_max_RO:
     register: 25353
     scale: 0.1
@@ -349,6 +377,7 @@ SENSOR_DEFINITIONS:
     data_type: uint16
     precision: 1
     scan_interval: medium
+    description: Battery Charge Current Max (RO)
   batt_discharge_curr_max_RO:
     register: 25355
     scale: 0.1
@@ -360,6 +389,7 @@ SENSOR_DEFINITIONS:
     data_type: uint16
     precision: 1
     scan_interval: medium
+    description: Battery Discharge Current Max (RO)
   internal_temperature:
     register: 164
     scale: 0.1
@@ -370,6 +400,7 @@ SENSOR_DEFINITIONS:
     data_type: int16
     precision: 1
     scan_interval: medium
+    description: Internal temperature
   radiator_temperature:
     register: 165
     scale: 0.1
@@ -380,6 +411,7 @@ SENSOR_DEFINITIONS:
     data_type: int16
     precision: 1
     scan_interval: medium
+    description: Radiator temperature
   module_temperature:
     register: 166
     scale: 0.1
@@ -390,6 +422,7 @@ SENSOR_DEFINITIONS:
     data_type: int16
     precision: 1
     scan_interval: medium
+    description: Module temperature
   function_bit_value:
     register: 167
     data_type: uint16
@@ -397,6 +430,7 @@ SENSOR_DEFINITIONS:
     enabled_by_default: false
     icon: mdi:hash
     scan_interval: low
+    description: Function bit value
   bus_voltage:
     register: 168
     scale: 0.1
@@ -407,6 +441,7 @@ SENSOR_DEFINITIONS:
     data_type: uint16
     precision: 1
     scan_interval: medium
+    description: Bus voltage
   nbus_voltage:
     register: 169
     scale: 0.1
@@ -417,6 +452,7 @@ SENSOR_DEFINITIONS:
     data_type: uint16
     precision: 1
     scan_interval: medium
+    description: NBus voltage
   battery_voltage:
     register: 170
     scale: 0.1
@@ -427,6 +463,7 @@ SENSOR_DEFINITIONS:
     data_type: uint16
     precision: 1
     scan_interval: medium
+    description: Battery voltage
   battery_current:
     register: 171
     scale: 0.1
@@ -437,6 +474,7 @@ SENSOR_DEFINITIONS:
     data_type: int16
     precision: 1
     scan_interval: medium
+    description: Battery current
   battery_power:
     register: 172
     scale: 1
@@ -447,12 +485,14 @@ SENSOR_DEFINITIONS:
     data_type: int16
     precision: 0
     scan_interval: high
+    description: Battery power
   battery_mode:
     register: 173
     data_type: uint16
     icon: mdi:battery-sync
     enabled_by_default: true
     scan_interval: high
+    description: Battery mode
     states:
       0: No battery / disconnected
       1: Standby
@@ -466,6 +506,7 @@ SENSOR_DEFINITIONS:
     icon: mdi:state-machine
     enabled_by_default: true
     scan_interval: medium
+    description: Inverter state
     states:
       0: Wait
       1: On-Grid
@@ -481,6 +522,7 @@ SENSOR_DEFINITIONS:
     enabled_by_default: false
     icon: mdi:alert
     scan_interval: medium
+    description: Warning code
   safety_country:
     register: 175
     data_type: uint16
@@ -488,6 +530,7 @@ SENSOR_DEFINITIONS:
     enabled_by_default: false
     icon: mdi:flag
     scan_interval: low
+    description: Safety country
     states:
       0: 50Hz Grid Default
       1: 50Hz LV Default
@@ -567,33 +610,31 @@ SENSOR_DEFINITIONS:
       75: Sweden
       76: Sweden_MV
       77: Switzerland
-      78: Taiwan
-      79: Thailand MEA
-      80: Thailand PEA
-      81: VDE4110
-      82: Warehouse
-      83: USA_208VacDefault
-      84: USA_240VacDefault
-      85: USA_208VacCA_SCE
-      86: USA_240VacCA_SCE
-      87: USA_208VacCA_SDGE
-      88: USA_240VacCA_SDGE
-      89: USA_208VacCA_PGE
-      90: USA_240VacCA_PGE
-      91: USA_208VacHECO_14HO
-      92: USA_240VacHECO_14HO
-      93: USA_208VacHECO_14HM
-      94: USA_240VacHECO_14HM
-      95: USA_480VacDefault
-      96: USA_480VacCA_SCE
-      97: USA_480VacHECO_14HO
-      98: USA_208VacKAAI_14HO
-      99: USA_240VacKAAI_14HO
+      80: Taiwan
+      81: Thailand MEA
+      82: Thailand PEA
+      83: VDE4110
+      84: Warehouse
+      85: USA_208VacDefault
+      86: USA_240VacDefault
+      87: USA_208VacCA_SCE
+      88: USA_240VacCA_SCE
+      89: USA_208VacCA_SDGE
+      90: USA_240VacCA_SDGE
+      91: USA_208VacCA_PGE
+      92: USA_240VacCA_PGE
+      93: USA_208VacHECO_14HO
+      94: USA_240VacHECO_14HO
+      95: USA_208VacHECO_14HM
+      96: USA_240VacHECO_14HM
+      97: USA_480VacDefault
+      98: USA_480VacCA_SCE
+      99: USA_480VacHECO_14HO
       100: Australia B
       101: Australia C
-      102: ChileMTA
-      103: ChileMTB
-      104: USA_208VacLUMA
+      103: ChileMTA
+      104: ChileMTB
+      105: USA_208VacLUMA
       105: USA_240VacLUMA
       106: EN50549
   pv_energy_total:
@@ -607,6 +648,7 @@ SENSOR_DEFINITIONS:
     data_type: uint32
     precision: 1
     scan_interval: low
+    description: PV Energy Total
   pv_energy_day:
     register: 183
     scale: 0.1
@@ -617,7 +659,8 @@ SENSOR_DEFINITIONS:
     data_type: uint16
     precision: 1
     scan_interval: low
-  energy_to_grid_total:
+    description: PV Energy Today
+  utility_to_grid_total:
     register: 184
     count: 2
     scale: 0.1
@@ -628,7 +671,8 @@ SENSOR_DEFINITIONS:
     data_type: uint32
     precision: 1
     scan_interval: low
-  energy_to_grid_day:
+    description: Utility to Grid Total
+  utility_to_grid_day:
     register: 188
     scale: 0.1
     unit: kWh
@@ -638,7 +682,8 @@ SENSOR_DEFINITIONS:
     data_type: uint16
     precision: 1
     scan_interval: low
-  energy_from_grid_total:
+    description: Utility to Grid Today
+  utility_from_grid_total:
     register: 189
     count: 2
     scale: 0.1
@@ -649,7 +694,8 @@ SENSOR_DEFINITIONS:
     data_type: uint32
     precision: 1
     scan_interval: low
-  energy_from_grid_day:
+    description: Utility from Grid Total
+  utility_from_grid_day:
     register: 191
     scale: 0.1
     unit: kWh
@@ -659,6 +705,7 @@ SENSOR_DEFINITIONS:
     data_type: uint16
     precision: 1
     scan_interval: low
+    description: Utility from Grid Today
   load_energy_total:
     register: 192
     count: 2
@@ -670,6 +717,7 @@ SENSOR_DEFINITIONS:
     data_type: uint32
     precision: 1
     scan_interval: low
+    description: Load Energy Total
   load_energy_day:
     register: 194
     scale: 0.1
@@ -680,6 +728,7 @@ SENSOR_DEFINITIONS:
     data_type: uint16
     precision: 1
     scan_interval: low
+    description: Load Energy Today
   battery_charge_energy_total:
     register: 195
     count: 2
@@ -691,6 +740,7 @@ SENSOR_DEFINITIONS:
     data_type: uint32
     precision: 1
     scan_interval: low
+    description: Battery Charge Energy Total
   battery_charge_energy_day:
     register: 197
     scale: 0.1
@@ -701,6 +751,7 @@ SENSOR_DEFINITIONS:
     data_type: uint16
     precision: 1
     scan_interval: low
+    description: Battery Charge Energy Today
   battery_discharge_energy_total:
     register: 198
     count: 2
@@ -712,6 +763,7 @@ SENSOR_DEFINITIONS:
     data_type: uint32
     precision: 1
     scan_interval: low
+    description: Battery Discharge Energy Total
   battery_discharge_energy_day:
     register: 200
     scale: 0.1
@@ -722,6 +774,7 @@ SENSOR_DEFINITIONS:
     data_type: uint16
     precision: 1
     scan_interval: low
+    description: Battery Discharge Energy Today
   cpld_code:
     register: 201
     data_type: uint16
@@ -729,6 +782,7 @@ SENSOR_DEFINITIONS:
     enabled_by_default: false
     icon: mdi:alert-circle
     scan_interval: low
+    description: CPLD code
   battery_voltage_2:
     register: 262
     scale: 0.1
@@ -739,6 +793,7 @@ SENSOR_DEFINITIONS:
     data_type: uint16
     precision: 1
     scan_interval: medium
+    description: Battery 2 Voltage
   battery_current_2:
     register: 263
     scale: 0.1
@@ -749,6 +804,7 @@ SENSOR_DEFINITIONS:
     data_type: int16
     precision: 1
     scan_interval: medium
+    description: Battery 2 Current
   battery_power_2:
     register: 264
     scale: 1
@@ -759,11 +815,13 @@ SENSOR_DEFINITIONS:
     data_type: int16
     precision: 0
     scan_interval: medium
+    description: Battery 2 Power
   battery_mode_2:
     register: 265
     data_type: uint16
     enabled_by_default: false
     scan_interval: medium
+    description: Battery 2 Mode
     states:
       0: No battery / disconnected
       1: Standby
@@ -781,6 +839,7 @@ SENSOR_DEFINITIONS:
     data_type: uint16
     precision: 1
     scan_interval: medium
+    description: Utility Voltage (Phase 1)
   utility_current_phase1:
     register: 267
     scale: 0.1
@@ -791,6 +850,7 @@ SENSOR_DEFINITIONS:
     data_type: uint16
     precision: 1
     scan_interval: medium
+    description: Utility Current (Phase 1)
   utility_power_phase1:
     register: 268
     scale: 1
@@ -801,6 +861,7 @@ SENSOR_DEFINITIONS:
     data_type: int16
     precision: 0
     scan_interval: high
+    description: Utility Power (Phase 1)
   utility_voltage_phase2:
     register: 270
     scale: 0.1
@@ -811,6 +872,7 @@ SENSOR_DEFINITIONS:
     data_type: uint16
     precision: 1
     scan_interval: medium
+    description: Utility Voltage (Phase 2)
   utility_current_phase2:
     register: 271
     scale: 0.1
@@ -821,6 +883,7 @@ SENSOR_DEFINITIONS:
     data_type: uint16
     precision: 1
     scan_interval: medium
+    description: Utility Current (Phase 2)
   utility_power_phase2:
     register: 272
     scale: 1
@@ -831,6 +894,7 @@ SENSOR_DEFINITIONS:
     data_type: int16
     precision: 0
     scan_interval: medium
+    description: Utility Power (Phase 2)
   utility_voltage_phase3:
     register: 274
     scale: 0.1
@@ -841,6 +905,7 @@ SENSOR_DEFINITIONS:
     data_type: uint16
     precision: 1
     scan_interval: medium
+    description: Utility Voltage (Phase 3)
   utility_current_phase3:
     register: 275
     scale: 0.1
@@ -851,6 +916,7 @@ SENSOR_DEFINITIONS:
     data_type: uint16
     precision: 1
     scan_interval: medium
+    description: Utility Current (Phase 3)
   utility_power_phase3:
     register: 276
     scale: 1
@@ -861,6 +927,7 @@ SENSOR_DEFINITIONS:
     data_type: int16
     precision: 0
     scan_interval: medium
+    description: Utility Power (Phase 3)
   utility_frequency:
     register: 278
     scale: 0.01
@@ -871,6 +938,7 @@ SENSOR_DEFINITIONS:
     data_type: uint16
     precision: 2
     scan_interval: medium
+    description: Utility Frequency
   total_utility_power:
     register: 385
     scale: 1
@@ -881,6 +949,7 @@ SENSOR_DEFINITIONS:
     data_type: int16
     precision: 0
     scan_interval: medium
+    description: Total Utility Power
   bms_comm_status:
     register: 2002
     data_type: uint16
@@ -888,6 +957,7 @@ SENSOR_DEFINITIONS:
     enabled_by_default: false
     icon: mdi:battery-check-outline
     scan_interval: medium
+    description: BMS Communication Status
     states:
       0: NG
       1: OK
@@ -901,6 +971,7 @@ SENSOR_DEFINITIONS:
     data_type: uint16
     precision: 0
     scan_interval: medium
+    description: BMS SoC
   bms_soh:
     register: 2011
     scale: 1
@@ -911,6 +982,7 @@ SENSOR_DEFINITIONS:
     data_type: uint16
     precision: 0
     scan_interval: low
+    description: BMS SoH
   battery_strings:
     register: 2012
     data_type: uint16
@@ -919,6 +991,7 @@ SENSOR_DEFINITIONS:
     enabled_by_default: false
     icon: mdi:battery-multiple
     scan_interval: low
+    description: Battery Strings
   battery_total_voltage:
     register: 2024
     scale: 0.1
@@ -930,6 +1003,7 @@ SENSOR_DEFINITIONS:
     data_type: uint16
     precision: 1
     scan_interval: medium
+    description: Battery Total Voltage
   battery_total_current:
     register: 2025
     scale: 0.1
@@ -940,6 +1014,7 @@ SENSOR_DEFINITIONS:
     data_type: uint16
     precision: 1
     scan_interval: medium
+    description: Battery Total Current
   cycle_times:
     register: 2026
     data_type: uint16
@@ -949,6 +1024,7 @@ SENSOR_DEFINITIONS:
     enabled_by_default: false
     precision: 0
     scan_interval: low
+    description: Cycle Times
   ems_power_set:
     register: 27512
     enabled_by_default: true
@@ -960,6 +1036,7 @@ SENSOR_DEFINITIONS:
     scale: 1
     data_type: uint16
     scan_interval: medium
+    description: EMS Power Set
   router_ssid_RO:
     register: 25000
     count: 20
@@ -968,6 +1045,7 @@ SENSOR_DEFINITIONS:
     enabled_by_default: false
     icon: mdi:router
     scan_interval: low
+    description: Router SSID (RO)
   router_password_RO:
     register: 25024
     count: 20
@@ -976,6 +1054,7 @@ SENSOR_DEFINITIONS:
     enabled_by_default: false
     icon: mdi:router
     scan_interval: low
+    description: Router Password (RO)
   router_encryption_RO:
     register: 25064
     count: 1
@@ -984,6 +1063,7 @@ SENSOR_DEFINITIONS:
     enabled_by_default: false
     icon: mdi:router
     scan_interval: low
+    description: Router Encryption (RO)
   manufacturer_RO:
     register: 25128
     count: 4
@@ -992,6 +1072,104 @@ SENSOR_DEFINITIONS:
     enabled_by_default: false
     icon: mdi:router
     scan_interval: low
+    description: Manufacturer (RO)
+  tou_start_time_1:
+    register: 27515
+    data_type: uint16
+    category: config
+    enabled_by_default: false
+    icon: mdi:calendar-start
+    scan_interval: medium
+    description: TOU Start Time 1
+  tou_start_time_2:
+    register: 27516
+    data_type: uint16
+    category: config
+    enabled_by_default: false
+    icon: mdi:calendar
+    scan_interval: medium
+    description: TOU Start Time 2
+  tou_start_time_3:
+    register: 27517
+    data_type: uint16
+    category: config
+    enabled_by_default: false
+    icon: mdi:calendar-edit
+    scan_interval: medium
+    description: TOU Start Time 3
+  tou_start_time_4:
+    register: 27518
+    data_type: uint16
+    category: config
+    enabled_by_default: false
+    icon: mdi:calendar-range
+    scan_interval: medium
+    description: TOU Start Time 4
+  tou_work_week_1:
+    register: 27519
+    data_type: uint16
+    category: config
+    enabled_by_default: false
+    icon: mdi:calendar-week
+    scan_interval: medium
+    description: TOU Work Week 1
+  tou_work_week_2:
+    register: 27520
+    data_type: uint16
+    category: config
+    enabled_by_default: false
+    icon: mdi:calendar
+    scan_interval: medium
+    description: TOU Work Week 2
+  tou_work_week_3:
+    register: 27521
+    data_type: uint16
+    category: config
+    enabled_by_default: false
+    icon: mdi:calendar
+    scan_interval: medium
+    description: TOU Work Week 3
+  tou_work_week_4:
+    register: 27522
+    data_type: uint16
+    category: config
+    enabled_by_default: false
+    icon: mdi:calendar
+    scan_interval: medium
+    description: TOU Work Week 4
+  tou_peak_power:
+    register: 27531
+    data_type: uint16
+    unit: W
+    device_class: power
+    category: config
+    enabled_by_default: false
+    icon: mdi:flash
+    scan_interval: medium
+    description: TOU Peak Power
+  tou_energy_today:
+    register: 27532
+    data_type: uint16
+    unit: kWh
+    device_class: energy
+    category: config
+    enabled_by_default: false
+    icon: mdi:calendar-day
+    scan_interval: medium
+    description: TOU Energy Today
+  exit_mode_set:
+    register: 27533
+    data_type: uint16
+    category: config
+    enabled_by_default: false
+    icon: mdi:door-open-outline
+    scan_interval: medium
+    description: Exit Mode Set
+    states:
+      0: Auto
+      1: Manual
+      2: Force Off
+      3: Emergency
 BINARY_SENSOR_DEFINITIONS:
   bms_comm_ok:
     register: 2002
@@ -1001,11 +1179,13 @@ BINARY_SENSOR_DEFINITIONS:
     icon: mdi:check-network-outline
     enabled_by_default: false
     scan_interval: high
+    description: BMS Communication OK
 SELECT_DEFINITIONS:
   operation_mode:
     register: 25243
     enabled_by_default: true
     scan_interval: high
+    description: Operation Mode
     options:
       self_use: 0
       off_grid: 1
@@ -1017,8 +1197,7 @@ SELECT_DEFINITIONS:
     register: 27511
     enabled_by_default: true
     scan_interval: high
-    category: config
-    icon: mdi:battery-charging-outline
+    description: EMS Power Mode
     options:
       stopped: 255
       auto: 1
@@ -1042,6 +1221,7 @@ SWITCH_DEFINITIONS:
     data_type: uint16
     scan_interval: high
     icon: mdi:home-power-outline
+    description: Backup Function
 NUMBER_DEFINITIONS:
   max_charge_current:
     register: 25353
@@ -1054,6 +1234,7 @@ NUMBER_DEFINITIONS:
     scale: 0.1
     data_type: uint16
     scan_interval: high
+    description: Max Charge Current
   max_discharge_current:
     register: 25355
     enabled_by_default: false
@@ -1065,6 +1246,7 @@ NUMBER_DEFINITIONS:
     scale: 0.1
     data_type: uint16
     scan_interval: high
+    description: Max Discharge Current
   charge_to_soc:
     register: 25362
     enabled_by_default: false
@@ -1076,6 +1258,7 @@ NUMBER_DEFINITIONS:
     scale: 1
     data_type: uint16
     scan_interval: high
+    description: Charge to SoC
   ems_power_set:
     register: 27512
     enabled_by_default: true
@@ -1087,6 +1270,7 @@ NUMBER_DEFINITIONS:
     scale: 1
     data_type: uint16
     scan_interval: high
+    description: EMS Power Set
   port_number_1:
     register: 25100
     enabled_by_default: false
@@ -1098,6 +1282,7 @@ NUMBER_DEFINITIONS:
     scale: 1
     data_type: uint16
     scan_interval: low
+    description: Port Number 1
   modbus_address:
     register: 25127
     enabled_by_default: false
@@ -1109,6 +1294,7 @@ NUMBER_DEFINITIONS:
     scale: 1
     data_type: uint16
     scan_interval: low
+    description: Modbus Address
   modbus_baud_rate:
     register: 25132
     count: 2
@@ -1121,6 +1307,7 @@ NUMBER_DEFINITIONS:
     scale: 1
     data_type: uint32
     scan_interval: low
+    description: Modbus Baud Rate
 BUTTON_DEFINITIONS:
   reset_inverter:
     register: 25220
@@ -1129,6 +1316,7 @@ BUTTON_DEFINITIONS:
     category: diagnostic
     enabled_by_default: false
     data_type: uint16
+    description: Reset Inverter
   start_ac_port_connection:
     register: 25218
     command: 0
@@ -1136,6 +1324,7 @@ BUTTON_DEFINITIONS:
     category: diagnostic
     enabled_by_default: false
     data_type: uint16
+    description: Start AC Port Connection
   stop_ac_port_connection:
     register: 25219
     command: 0
@@ -1143,6 +1332,7 @@ BUTTON_DEFINITIONS:
     category: diagnostic
     enabled_by_default: false
     data_type: uint16
+    description: Stop AC Port Connection
 VERSION_SENSOR_DEFINITIONS:
   firmware_version:
     key: firmware_version
@@ -1190,4 +1380,3 @@ SOLAR_POWER_SENSOR_DEFINITIONS:
     icon: mdi:solar-power
     device_class: power
     state_class: measurement
-

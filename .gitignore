@@ -2,11 +2,8 @@
 **/.DS_Store
 github.code-workspace
 custom_components/marstek_modbus/icon.png
-icon*
-logo*
 TODO.md
 .venv
 Modbus_Protocol_Hybrid_S-V1.15.pdf
 mydevice/
 rell.bat
-tests/pytest.bat

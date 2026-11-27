@@ -4,7 +4,7 @@
 This software can and will burn your house down. it is pre-release stuff. 
 
 
-This is a custom HACS-compatible integration for Dyness Aquavolt battery systems, using **Modbus TCP** via an RS485-to-WiFi gateway or direct Ethernet. No YAML required. The integration provides sensors, switches and number controls to monitor and manage the battery directly from Home Assistant.
+This is a custom HACS-compatible/Marketplace integration for Dyness Aquavolt battery systems, using **Modbus TCP** via an RS485-to-WiFi gateway or direct Ethernet. No YAML required. The integration provides sensors, switches and number controls to monitor and manage the battery directly from Home Assistant.
 
 ### Requirements
 
@@ -36,7 +36,7 @@ This is a custom HACS-compatible integration for Dyness Aquavolt battery systems
 
 ### Installation
 
-1. Add this repository to HACS **Integrations → Custom repositories**
+1. Add this repository to HACS **Integrations → Custom repositories** Or add it to marketplace 
 2. Install the "Dyness Aquavolt Modbus" integration https://github.com/maarteng70/dyness-aquavolt-modbus
 3. Restart Home Assistant
 4. Add the integration via **Settings → Devices & Services**
@@ -52,7 +52,8 @@ This is a custom HACS-compatible integration for Dyness Aquavolt battery systems
 The integration uses intelligent polling with configurable intervals per entity type.
 
 **Configurable via Options UI:**
-- **High priority** (default: 10 seconds) - Fast-changing sensors such as power, voltage, current, SOC and state entities
+- **High priority** (default: 5 seconds) - Fast-changing sensors : power
+- **medium priority**, voltage, current, SOC and state entities
 - **Low priority** (default: 60 seconds) - Slower-changing sensors such as totals, diagnostics, firmware and device information
 
 ### Modbus Registers Used
@@ -80,116 +81,6 @@ These registers use the custom `power_ratio` data type. Actual power = register 
 
 AC Port and Utility phases are named **Phase 1, Phase 2, Phase 3** (not R, S, T).
 
-### EMS Power Modes
-
-The `ems_power_mode` select (register 27511) supports these modes:
-- **Charge-BAT** (0x000B / 11): Force battery to charge at set power
-- **Discharge-BAT** (0x000C / 12): Force battery to discharge at set power
-- Plus standard modes: Auto, Charge PV, Discharge+PV, Import AC, Export AC, Conserve, Off Grid, Battery Standby, Buy Power, Sell Power
-
-When Charge-BAT or Discharge-BAT is selected, set the power value via `ems_power_set` (register 27512) in Watts.
-
-### Home Battery Control (Node-RED) Compatibility
-
-The `marstek-venus-rs485-node-red` project (Home Battery Control) reads from Home Assistant entities via Node-RED WebSocket nodes. It expects specific entity names from the Marstek/Fonske ecosystem. To use this Dyness integration with Home Battery Control, create **template sensors** in your Home Assistant `configuration.yaml` (or a package) that map Dyness entity names to the expected HBC names.
-
-Add this to your configuration:
-
-```yaml
-template:
-  # Battery power (maps Dyness battery_power to HBC expected name)
-  - sensor:
-      - name: "Marstek M1 Battery Power"
-        unique_id: "marstek_m1_battery_power"
-        state: "{{ states('sensor.dyness_aquavolt_battery_power') | float(0) }}"
-        unit_of_measurement: "W"
-        device_class: "power"
-        state_class: "measurement"
-        availability: "{{ is_number(states('sensor.dyness_aquavolt_battery_power')) }}"
-
-  # Battery SOC (maps Dyness BMS SoC to HBC expected name)
-  - sensor:
-      - name: "Marstek M1 Battery SOC"
-        unique_id: "marstek_m1_battery_soc"
-        state: "{{ states('sensor.dyness_aquavolt_bms_soc') | float(0) }}"
-        unit_of_measurement: "%"
-        device_class: "battery"
-        state_class: "measurement"
-        availability: "{{ is_number(states('sensor.dyness_aquavolt_bms_soc')) }}"
-
-  # AC Port / Grid supply power (Utility P1 measure point)
-  - sensor:
-      - name: "P1 Meter Power"
-        unique_id: "p1_meter_power"
-        state: "{{ states('sensor.dyness_aquavolt_utility_p1_power') | float(0) }}"
-        unit_of_measurement: "W"
-        device_class: "power"
-        state_class: "measurement"
-        availability: "{{ is_number(states('sensor.dyness_aquavolt_utility_p1_power')) }}"
-
-  # AC Port Voltage (R phase)
-  - sensor:
-      - name: "AC Port Voltage"
-        unique_id: "dyness_ac_port_voltage_r"
-        state: "{{ states('sensor.dyness_aquavolt_ac_port_voltage_r') | float(0) }}"
-        unit_of_measurement: "V"
-        device_class: "voltage"
-        state_class: "measurement"
-
-  # Inverter state
-  - sensor:
-      - name: "Marstek M1 Inverter State"
-        unique_id: "marstek_m1_inverter_state"
-        state: "{{ states('sensor.dyness_aquavolt_inverter_state') }}"
-        icon: "mdi:state-machine"
-
-  # Battery current
-  - sensor:
-      - name: "Marstek M1 Battery Current"
-        unique_id: "marstek_m1_battery_current"
-        state: "{{ states('sensor.dyness_aquavolt_battery_current') | float(0) }}"
-        unit_of_measurement: "A"
-        device_class: "current"
-        state_class: "measurement"
-
-  # Battery voltage
-  - sensor:
-      - name: "Marstek M1 Battery Voltage"
-        unique_id: "marstek_m1_battery_voltage"
-        state: "{{ states('sensor.dyness_aquavolt_battery_voltage') | float(0) }}"
-        unit_of_measurement: "V"
-        device_class: "voltage"
-        state_class: "measurement"
-
-input_number:
-  # Map to Dyness charge-to-SOC number
-  marstek_m1_charging_cutoff_capacity:
-    name: "Marstek M1 Charging Cutoff Capacity"
-    min: 80
-    max: 100
-    initial: 100
-    step: 1
-    unit_of_measurement: "%"
-    mode: box
-
-  marstek_m1_discharging_cutoff_capacity:
-    name: "Marstek M1 Discharging Cutoff Capacity"
-    min: 11
-    max: 80
-    initial: 11
-    step: 1
-    unit_of_measurement: "%"
-    mode: box
-
-input_select:
-  # Map to Dyness operation mode select
-  marstek_master_battery_mode:
-    name: "Master Battery Mode"
-    options:
-      - "Manual control"
-      - "Full control"
-    icon: "mdi:battery-heart"
-```
 
 ### Entity Naming Convention
 
@@ -214,4 +105,4 @@ The **Utility P1** measure point (registers 266-278) remains named "Utility P1" 
 - `battery_total_voltage` (reg 2024) is marked **experimental** — it reports Volts only, not kWh capacity. The `stored_energy` calculated sensor using it is approximate.
 - `battery_cycle_count_calc` now uses only discharge energy (no capacity reference).
 - The integration supports Modbus TCP via RS485-to-TCP gateway you need to get such a device seperate, ew41 or lilygo comes to mind. 
-- Schedule Time format: start and end are entered as HHMM 24-hour integers
+

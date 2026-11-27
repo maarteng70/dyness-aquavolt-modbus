@@ -1,4 +1,6 @@
 # Complete Setup Guide: Dyness Aquavolt + Home Battery Control (HBC)
+NOTE: untested, AI generated for now. 
+
 
 ## Overview
 

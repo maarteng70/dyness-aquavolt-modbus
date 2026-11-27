@@ -6,7 +6,6 @@
 
 #### Bug Fixes
 - **Power registers changed from S32 to S16**: The Dyness inverter reports power registers (120, 125, 130, 133, 135, 137, 143, 268, 272, 276, 385) as 4-byte values where the first 2 bytes are ignored. The actual power value is in the second register as a signed int16. Previous versions decoded these as int32, producing incorrect values (e.g., 196608W instead of 3W).
-- Removed duplicate/broken entries: `ems_power_set_RO`, `lock_in_power_RO`, `lock_out_power_RO`
 
 #### New Features
 - **AC Port phase naming**: Registers renamed from R/S/T to Phase 1/2/3 (e.g., `ac_port_power_phase1`, `ac_port_power_phase2`, `ac_port_power_phase3`)
@@ -49,12 +48,6 @@
 - "grid" naming for AC port entities (replaced with "ac_port")
 
 ---
-
-## Compatibility
-
-- **Home Assistant**: Core 2025.9+
-- **HACS**: Compatible
-- **Home Battery Control (Node-RED)**: Requires entity name mapping via template sensors (see README)
 
 ## Upgrade Notes
 

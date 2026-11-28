@@ -6,7 +6,7 @@ import socket
 import voluptuous as vol
 from homeassistant import config_entries
 from homeassistant.components.modbus import async_get_temporary_unit
-from homeassistant.const import CONF_HOST, CONF_PORT
+from homeassistant.const import CONF_HOST, CONF_NAME, CONF_PORT
 from homeassistant.helpers.translation import async_get_translations
 from modbus_connection import ModbusTcpParams
 
@@ -26,6 +26,16 @@ SCHEMA_HOST_BASE = vol.Schema(
         vol.Required(CONF_HOST): str,
         vol.Optional(CONF_PORT, default=DEFAULT_PORT): int,
         vol.Optional(CONF_UNIT_ID, default=DEFAULT_UNIT_ID): vol.Coerce(int),
+    }
+)
+
+DEFAULT_NAME = "Dyness Aquavolt"
+
+# The device name becomes the entity-id prefix (e.g. "M1" ->
+# sensor.m1_battery_power), so it is only asked for on first setup.
+SCHEMA_USER = SCHEMA_HOST_BASE.extend(
+    {
+        vol.Optional(CONF_NAME, default=DEFAULT_NAME): str,
     }
 )
 
@@ -69,7 +79,7 @@ class DynessConfigFlow(config_entries.ConfigFlow, domain=DOMAIN):
                 return self.async_show_form(
                     step_id="user",
                     data_schema=self.add_suggested_values_to_schema(
-                        SCHEMA_HOST_BASE, user_input
+                        SCHEMA_USER, user_input
                     ),
                     errors=errors,
                 )
@@ -92,9 +102,9 @@ class DynessConfigFlow(config_entries.ConfigFlow, domain=DOMAIN):
                 )
 
                 if not errors["base"]:
-                    title = translations.get(
-                        "config.step.user.title", "Dyness Aquavolt Modbus"
-                    )
+                    title = (user_input.get(CONF_NAME) or DEFAULT_NAME).strip()
+                    if not title:
+                        title = DEFAULT_NAME
                     data = {
                         CONF_HOST: host,
                         CONF_PORT: port,
@@ -105,7 +115,7 @@ class DynessConfigFlow(config_entries.ConfigFlow, domain=DOMAIN):
         return self.async_show_form(
             step_id="user",
             data_schema=self.add_suggested_values_to_schema(
-                SCHEMA_HOST_BASE, user_input or {}
+                SCHEMA_USER, user_input or {}
             ),
             errors=errors,
             description_placeholders={},

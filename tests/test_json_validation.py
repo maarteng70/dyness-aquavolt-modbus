@@ -193,14 +193,21 @@ def test_no_orphan_translations():
 
     errors = []
 
-    # Known computed sensors that don't have register definitions
-    # These are derived from other sensors, not read from Modbus registers
+    # Known computed / programmatic entities that have a translation but no
+    # register definition in dyness.yaml.
     computed_sensor_keys = {
         'firmware_version',
         'round_trip_efficiency_total',
         'stored_energy',
         'solar_power_total',
         'battery_cycle_count_calc',
+        'tou_schedule_1',
+        'tou_schedule_2',
+        'tou_schedule_3',
+        'tou_schedule_4',
+    }
+    programmatic_keys = {
+        'binary_sensor': {'modbus_connection'},
     }
 
     for trans_section, trans_keys in entity_t.items():
@@ -213,6 +220,9 @@ def test_no_orphan_translations():
         for key in trans_keys:
             # Skip computed sensors that don't have register definitions
             if trans_section == 'sensor' and key in computed_sensor_keys:
+                continue
+            # Skip entities created programmatically in Python, not from YAML
+            if key in programmatic_keys.get(trans_section, set()):
                 continue
             if key not in yaml_keys:
                 errors.append(f"Orphan translation 'entity.{trans_section}.{key}' has no corresponding register definition")

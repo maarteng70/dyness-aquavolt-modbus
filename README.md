@@ -13,23 +13,22 @@ This is a custom HACS-compatible/Marketplace integration for Dyness Aquavolt bat
 
 - The IP address, port of the Modbus TCP (usually port 502) and Unit ID (also called Slave ID, default 1).
 - Home Assistant Core 2025.9 or later
-- HACS installed in HA
+- HACS installed in HA, Or marketplace since HA 2026.11
 
 ### Features
 
 - Native Modbus TCP polling via HA's built-in Modbus integration (no separate pymodbus dependency)
 - Polling is handled centrally via the DataUpdateCoordinator with dynamic intervals per entity type
 - Smart contiguous block polling groups adjacent registers into single Modbus requests where possible, with automatic fallback to per-entity reads on failure
-- Configurable scan intervals via the integration options UI
+- 3 Configurable scan intervals via the integration options UI
 - Fully asynchronous operation for optimal performance and responsiveness
 - Sensors for battery voltage, current, SOC, power, energy, and fault/alarm status
 - **AC Port** measurement point (inverter AC output) monitoring
-- Utility P1 measure point (grid supply side) monitoring
+- Utility P1 measure point (grid supply side) monitoring (when running a power mode that collects it) 
 - Diagnostic entities for communication health, firmware version, and BMS status
 - Switches for backup function control
 - Adjustable charge/discharge current and charge-to-SOC limits
 - EMS power mode control
-- Reset button for inverter reset
 - Calculated sensors: round-trip efficiency, stored energy, cycle count
 - UI-based configuration (Config Flow)
 - Fully local, no cloud required
@@ -38,7 +37,7 @@ This is a custom HACS-compatible/Marketplace integration for Dyness Aquavolt bat
 
 1. Add this repository to HACS **Integrations → Custom repositories** Or add it to marketplace 
 2. Install the "Dyness Aquavolt Modbus" integration https://github.com/maarteng70/dyness-aquavolt-modbus
-3. Restart Home Assistant
+3. Restart/reload Home Assistant
 4. Add the integration via **Settings → Devices & Services**
 5. Enter the connection details:
    - IP address of your Modbus TCP gateway

@@ -13,6 +13,7 @@ from homeassistant.helpers.update_coordinator import CoordinatorEntity
 
 from .coordinator import DynessCoordinator
 from .const import DOMAIN, MANUFACTURER, MODEL
+from .helpers.tou import describe_schedule, schedule_label
 
 _LOGGER = logging.getLogger(__name__)
 
@@ -33,6 +34,7 @@ async def async_setup_entry(
         (DynessVersionSensor, coordinator.VERSION_SENSOR_DEFINITIONS),
         (DynessStoredEnergySensor, coordinator.STORED_ENERGY_SENSOR_DEFINITIONS),
         (DynessBatteryCycleSensor, coordinator.CYCLE_SENSOR_DEFINITIONS),
+        (DynessTouScheduleSensor, coordinator.TOU_SENSOR_DEFINITIONS),
     )
     for entity_cls, definitions in sensor_groups:
         entities.extend(entity_cls(coordinator, definition) for definition in definitions)
@@ -363,6 +365,50 @@ class DynessBatteryCycleSensor(DynessCalculatedSensor):
         return cycles
 
 
+class DynessTouScheduleSensor(DynessCalculatedSensor):
+    """Read-only, human-readable view of one TOU (economic mode) slot.
+
+    State looks like ``02:00-06:21`` (with `` (off)`` when the slot is not
+    enabled). Attributes expose the decoded window, weekdays and power in watts.
+    """
+
+    def _calculate(self, data: dict) -> None:
+        dependency_keys = self.get_dependency_keys()
+        values = {}
+        for alias, actual_key in dependency_keys.items():
+            if actual_key not in data or data.get(actual_key) is None:
+                self._attr_native_value = None
+                self._schedule = None
+                return
+            values[alias] = data[actual_key]
+
+        self._schedule = describe_schedule(
+            values.get("start"),
+            values.get("end"),
+            values.get("power"),
+            values.get("week"),
+        )
+        self._attr_native_value = schedule_label(
+            values.get("start"),
+            values.get("end"),
+            values.get("week"),
+        )
+
+    @property
+    def extra_state_attributes(self) -> dict:
+        schedule = getattr(self, "_schedule", None) or {}
+        return {
+            "start": schedule.get("start"),
+            "end": schedule.get("end"),
+            "days": schedule.get("days"),
+            "enabled": schedule.get("enabled"),
+            "power_w": schedule.get("power_w"),
+        }
+
+    def calculate_value(self, dep_values: dict):  # pragma: no cover - not used
+        raise NotImplementedError
+
+
 class DynessVersionSensor(DynessCalculatedSensor):
     def _calculate(self, data: dict) -> None:
         dependency_keys = self.get_dependency_keys()
@@ -380,13 +426,19 @@ class DynessVersionSensor(DynessCalculatedSensor):
 
     def calculate_value(self, raw_values: dict):
         mode = self.definition.get("mode")
-        if mode == "dsp_arm_bms_modbus":
+        if mode == "dsp_arm_svn":
+            # Matches the official Dyness app string, e.g. "17.0.269-10.238":
+            #  17  = DSP1 software version (reg 16)
+            #  0   = DSP2 software version (reg 17)
+            #  269 = DSP SVN version       (reg 18)
+            #  10  = ARM software version  (reg 19)
+            #  238 = ARM SVN version       (reg 20)
             dsp1_raw = int(raw_values.get("dsp1", 0))
             dsp2_raw = int(raw_values.get("dsp2", 0))
+            dsp_svn = int(raw_values.get("dsp_svn", 0))
             arm_raw = int(raw_values.get("arm", 0))
-            bms_raw = int(raw_values.get("bms", 0))
-            modbus_raw = int(raw_values.get("modbus", 0))
-            return f"{dsp1_raw}.{dsp2_raw}.{arm_raw}-{bms_raw}.{modbus_raw}"
+            arm_svn = int(raw_values.get("arm_svn", 0))
+            return f"{dsp1_raw}.{dsp2_raw}.{dsp_svn}-{arm_raw}.{arm_svn}"
         elif mode in ("dsp_arm_bms", "ems_vms_bms"):
             dsp1_raw = int(raw_values.get("dsp1", 0))
             dsp2_raw = int(raw_values.get("dsp2", 0))

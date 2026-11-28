@@ -24,7 +24,7 @@ SENSOR_DEFINITIONS:
     unit: W
     device_class: power
     category: diagnostic
-    enabled_by_default: false
+    enabled_by_default: true
     scan_interval: low
     description: Rated power of the battery
   ac_output_type:
@@ -339,6 +339,8 @@ SENSOR_DEFINITIONS:
       10: Sell Power
       11: Charge-BAT
       12: Discharge-BAT
+      16: Charge Only Self-use
+      17: Self-use
   operation_mode_RO:
     register: 25243
     data_type: uint16
@@ -373,7 +375,7 @@ SENSOR_DEFINITIONS:
     device_class: current
     state_class: measurement
     category: diagnostic
-    enabled_by_default: false
+    enabled_by_default: true
     data_type: uint16
     precision: 1
     scan_interval: medium
@@ -385,7 +387,7 @@ SENSOR_DEFINITIONS:
     device_class: current
     state_class: measurement
     category: diagnostic
-    enabled_by_default: false
+    enabled_by_default: true
     data_type: uint16
     precision: 1
     scan_interval: medium
@@ -1025,18 +1027,6 @@ SENSOR_DEFINITIONS:
     precision: 0
     scan_interval: low
     description: Cycle Times
-  ems_power_set:
-    register: 27512
-    enabled_by_default: true
-    icon: mdi:battery-charging-outline
-    min: -2500
-    max: 2500
-    step: 50
-    unit: W
-    scale: 1
-    data_type: int16
-    scan_interval: medium
-    description: EMS Power Set
   router_ssid_RO:
     register: 25000
     count: 20
@@ -1073,114 +1063,24 @@ SENSOR_DEFINITIONS:
     icon: mdi:router
     scan_interval: low
     description: Manufacturer (RO)
-  tou_start_time_1:
-    register: 27515
+  dsp_svn_version:
+    register: 18
     data_type: uint16
-    category: config
-    enabled_by_default: false
-    icon: mdi:calendar-start
-    scan_interval: medium
-    description: TOU Start Time 1
-  tou_start_time_2:
-    register: 27516
-    data_type: uint16
-    category: config
-    enabled_by_default: false
-    icon: mdi:calendar
-    scan_interval: medium
-    description: TOU Start Time 2
-  tou_start_time_3:
-    register: 27517
-    data_type: uint16
-    category: config
-    enabled_by_default: false
-    icon: mdi:calendar-edit
-    scan_interval: medium
-    description: TOU Start Time 3
-  tou_start_time_4:
-    register: 27518
-    data_type: uint16
-    category: config
-    enabled_by_default: false
-    icon: mdi:calendar-range
-    scan_interval: medium
-    description: TOU Start Time 4
-  tou_work_week_1:
-    register: 27519
-    data_type: uint16
-    category: config
-    enabled_by_default: false
-    icon: mdi:calendar-week
-    scan_interval: medium
-    description: TOU Work Week 1
-  tou_work_week_2:
-    register: 27520
-    data_type: uint16
-    category: config
-    enabled_by_default: false
-    icon: mdi:calendar
-    scan_interval: medium
-    description: TOU Work Week 2
-  tou_work_week_3:
-    register: 27521
-    data_type: uint16
-    category: config
-    enabled_by_default: false
-    icon: mdi:calendar
-    scan_interval: medium
-    description: TOU Work Week 3
-  tou_work_week_4:
-    register: 27522
-    data_type: uint16
-    category: config
-    enabled_by_default: false
-    icon: mdi:calendar
-    scan_interval: medium
-    description: TOU Work Week 4
-  tou_peak_power:
-    register: 27531
-    data_type: uint16
-    unit: W
-    device_class: power
-    category: config
-    enabled_by_default: false
-    icon: mdi:flash
-    scan_interval: medium
-    description: TOU Peak Power
-  tou_energy_today:
-    register: 27532
-    data_type: uint16
-    unit: kWh
-    device_class: energy
-    category: config
-    enabled_by_default: false
-    icon: mdi:calendar-day
-    scan_interval: medium
-    description: TOU Energy Today
-  exit_mode_set:
-    register: 27533
-    data_type: uint16
-    category: config
-    enabled_by_default: false
-    icon: mdi:door-open-outline
-    scan_interval: medium
-    description: Exit Mode Set
-    states:
-      0: Auto
-      1: Manual
-      2: Force Off
-      3: Emergency
-BINARY_SENSOR_DEFINITIONS:
-  modbus_connection:
-    register: 2002
-    data_type: uint16
-    bit_index: 0
     category: diagnostic
-    device_class: connectivity
-    icon: mdi:check-network-outline
     enabled_by_default: false
-    scan_interval: high
-    description: Modbus Connection
+    icon: mdi:chip
+    scan_interval: low
+    description: DSP SVN version
+  arm_svn_version:
+    register: 20
+    data_type: uint16
+    category: diagnostic
+    enabled_by_default: false
+    icon: mdi:chip
+    scan_interval: low
+    description: ARM SVN version
+
+BINARY_SENSOR_DEFINITIONS:
   bms_comm_ok:
     register: 2002
     data_type: uint16
@@ -1222,6 +1122,24 @@ SELECT_DEFINITIONS:
       sell_power: 10
       charge_bat: 11
       discharge_bat: 12
+      charge_only_self_use: 16
+      self_use: 17
+  exit_mode_set:
+    register: 27548
+    enabled_by_default: false
+    scan_interval: low
+    category: config
+    icon: mdi:door-open
+    description: Mode to return to when the EMS power mode expires
+    options:
+      self_use: 0
+      off_grid: 1
+      backup: 2
+      tou: 3
+      battery_priority: 6
+      ai_optimization: 7
+      restore_previous: 255
+
 SWITCH_DEFINITIONS:
   backup_function:
     register: 25252
@@ -1273,14 +1191,242 @@ NUMBER_DEFINITIONS:
     register: 27512
     enabled_by_default: true
     icon: mdi:battery-charging-outline
-    min: 0
-    max: 60000
-    step: 100
+    min: -980
+    max: 980
+    step: 50
     unit: W
     scale: 1
-    data_type: uint16
+    data_type: int16
     scan_interval: high
     description: EMS Power Set
+  tou_start_time_1:
+    register: 27515
+    enabled_by_default: false
+    icon: mdi:clock-start
+    min: 0
+    max: 2359
+    step: 1
+    unit: ''
+    scale: 1
+    data_type: uint16
+    scan_interval: low
+    description: TOU slot 1 start time (HHMM); app=Time Slot
+  tou_end_time_1:
+    register: 27516
+    enabled_by_default: false
+    icon: mdi:clock-end
+    min: 0
+    max: 2359
+    step: 1
+    unit: ''
+    scale: 1
+    data_type: uint16
+    scan_interval: low
+    description: TOU slot 1 end time (HHMM); app=Time Slot
+  tou_power_1:
+    register: 27517
+    enabled_by_default: false
+    icon: mdi:battery-charging-high
+    min: -980
+    max: 980
+    step: 1
+    unit: W
+    scale: 1
+    data_type: int16
+    scan_interval: low
+    description: TOU slot 1 battery power in W (negative = charge); app=Power
+  tou_work_week_1:
+    register: 27518
+    enabled_by_default: false
+    icon: mdi:calendar-week
+    min: 0
+    max: 65535
+    step: 1
+    unit: ''
+    scale: 1
+    data_type: uint16
+    scan_interval: low
+    description: TOU slot 1 weekday bitmask (0xFF00 | days)
+  tou_start_time_2:
+    register: 27519
+    enabled_by_default: false
+    icon: mdi:clock-start
+    min: 0
+    max: 2359
+    step: 1
+    unit: ''
+    scale: 1
+    data_type: uint16
+    scan_interval: low
+    description: TOU slot 2 start time (HHMM); app=Time Slot
+  tou_end_time_2:
+    register: 27520
+    enabled_by_default: false
+    icon: mdi:clock-end
+    min: 0
+    max: 2359
+    step: 1
+    unit: ''
+    scale: 1
+    data_type: uint16
+    scan_interval: low
+    description: TOU slot 2 end time (HHMM); app=Time Slot
+  tou_power_2:
+    register: 27521
+    enabled_by_default: false
+    icon: mdi:battery-charging-high
+    min: -980
+    max: 980
+    step: 1
+    unit: W
+    scale: 1
+    data_type: int16
+    scan_interval: low
+    description: TOU slot 2 battery power in W (negative = charge); app=Power
+  tou_work_week_2:
+    register: 27522
+    enabled_by_default: false
+    icon: mdi:calendar-week
+    min: 0
+    max: 65535
+    step: 1
+    unit: ''
+    scale: 1
+    data_type: uint16
+    scan_interval: low
+    description: TOU slot 2 weekday bitmask (0xFF00 | days)
+  tou_start_time_3:
+    register: 27523
+    enabled_by_default: false
+    icon: mdi:clock-start
+    min: 0
+    max: 2359
+    step: 1
+    unit: ''
+    scale: 1
+    data_type: uint16
+    scan_interval: low
+    description: TOU slot 3 start time (HHMM); app=Time Slot
+  tou_end_time_3:
+    register: 27524
+    enabled_by_default: false
+    icon: mdi:clock-end
+    min: 0
+    max: 2359
+    step: 1
+    unit: ''
+    scale: 1
+    data_type: uint16
+    scan_interval: low
+    description: TOU slot 3 end time (HHMM); app=Time Slot
+  tou_power_3:
+    register: 27525
+    enabled_by_default: false
+    icon: mdi:battery-charging-high
+    min: -980
+    max: 980
+    step: 1
+    unit: W
+    scale: 1
+    data_type: int16
+    scan_interval: low
+    description: TOU slot 3 battery power in W (negative = charge); app=Power
+  tou_work_week_3:
+    register: 27526
+    enabled_by_default: false
+    icon: mdi:calendar-week
+    min: 0
+    max: 65535
+    step: 1
+    unit: ''
+    scale: 1
+    data_type: uint16
+    scan_interval: low
+    description: TOU slot 3 weekday bitmask (0xFF00 | days)
+  tou_start_time_4:
+    register: 27527
+    enabled_by_default: false
+    icon: mdi:clock-start
+    min: 0
+    max: 2359
+    step: 1
+    unit: ''
+    scale: 1
+    data_type: uint16
+    scan_interval: low
+    description: TOU slot 4 start time (HHMM); app=Time Slot
+  tou_end_time_4:
+    register: 27528
+    enabled_by_default: false
+    icon: mdi:clock-end
+    min: 0
+    max: 2359
+    step: 1
+    unit: ''
+    scale: 1
+    data_type: uint16
+    scan_interval: low
+    description: TOU slot 4 end time (HHMM); app=Time Slot
+  tou_power_4:
+    register: 27529
+    enabled_by_default: false
+    icon: mdi:battery-charging-high
+    min: -980
+    max: 980
+    step: 1
+    unit: W
+    scale: 1
+    data_type: int16
+    scan_interval: low
+    description: TOU slot 4 battery power in W (negative = charge); app=Power
+  tou_work_week_4:
+    register: 27530
+    enabled_by_default: false
+    icon: mdi:calendar-week
+    min: 0
+    max: 65535
+    step: 1
+    unit: ''
+    scale: 1
+    data_type: uint16
+    scan_interval: low
+    description: TOU slot 4 weekday bitmask (0xFF00 | days)
+  soc_force_charge_start:
+    register: 27531
+    enabled_by_default: false
+    icon: mdi:battery-arrow-up
+    min: 0
+    max: 100
+    step: 1
+    unit: '%'
+    scale: 1
+    data_type: uint16
+    scan_interval: low
+    description: SOC at which forced charging starts
+  soc_force_charge_stop:
+    register: 27532
+    enabled_by_default: false
+    icon: mdi:battery-arrow-down
+    min: 0
+    max: 100
+    step: 1
+    unit: '%'
+    scale: 1
+    data_type: uint16
+    scan_interval: low
+    description: SOC at which forced charging stops
+  ems_power_mode_effective_time:
+    register: 27547
+    enabled_by_default: false
+    icon: mdi:timer-outline
+    min: 0
+    max: 65535
+    step: 1
+    unit: s
+    scale: 1
+    data_type: uint16
+    scan_interval: low
+    description: How long the EMS power mode stays active (0 = permanent)
   port_number_1:
     register: 25100
     enabled_by_default: false
@@ -1343,6 +1489,15 @@ BUTTON_DEFINITIONS:
     enabled_by_default: false
     data_type: uint16
     description: Stop AC Port Connection
+  clear_all_economic_mode:
+    register: 27533
+    command: 1
+    icon: mdi:calendar-remove
+    category: config
+    enabled_by_default: false
+    data_type: uint16
+    description: Clear all economic (TOU) mode schedules
+
 VERSION_SENSOR_DEFINITIONS:
   firmware_version:
     key: firmware_version
@@ -1350,13 +1505,13 @@ VERSION_SENSOR_DEFINITIONS:
     icon: mdi:chip
     category: diagnostic
     enabled_by_default: true
-    mode: dsp_arm_bms_modbus
+    mode: dsp_arm_svn
     dependency_keys:
       dsp1: dsp1_software_version
       dsp2: dsp2_software_version
+      dsp_svn: dsp_svn_version
       arm: arm_software_version
-      bms: bms_version
-      modbus: modbus_protocol_version
+      arm_svn: arm_svn_version
 EFFICIENCY_SENSOR_DEFINITIONS:
   round_trip_efficiency_total:
     key: round_trip_efficiency_total
@@ -1391,3 +1546,40 @@ SOLAR_POWER_SENSOR_DEFINITIONS:
     icon: mdi:solar-power
     device_class: power
     state_class: measurement
+TOU_SENSOR_DEFINITIONS:
+  tou_schedule_1:
+    key: tou_schedule_1
+    icon: mdi:calendar-clock
+    enabled_by_default: true
+    dependency_keys:
+      start: tou_start_time_1
+      end: tou_end_time_1
+      power: tou_power_1
+      week: tou_work_week_1
+  tou_schedule_2:
+    key: tou_schedule_2
+    icon: mdi:calendar-clock
+    enabled_by_default: true
+    dependency_keys:
+      start: tou_start_time_2
+      end: tou_end_time_2
+      power: tou_power_2
+      week: tou_work_week_2
+  tou_schedule_3:
+    key: tou_schedule_3
+    icon: mdi:calendar-clock
+    enabled_by_default: true
+    dependency_keys:
+      start: tou_start_time_3
+      end: tou_end_time_3
+      power: tou_power_3
+      week: tou_work_week_3
+  tou_schedule_4:
+    key: tou_schedule_4
+    icon: mdi:calendar-clock
+    enabled_by_default: true
+    dependency_keys:
+      start: tou_start_time_4
+      end: tou_end_time_4
+      power: tou_power_4
+      week: tou_work_week_4

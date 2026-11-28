@@ -65,6 +65,7 @@ class DynessCoordinator(DataUpdateCoordinator):
         self.VERSION_SENSOR_DEFINITIONS = []
         self.STORED_ENERGY_SENSOR_DEFINITIONS = []
         self.CYCLE_SENSOR_DEFINITIONS = []
+        self.TOU_SENSOR_DEFINITIONS = []
 
         self._all_definitions = []
 
@@ -362,6 +363,7 @@ class DynessCoordinator(DataUpdateCoordinator):
             self.VERSION_SENSOR_DEFINITIONS = _normalize_section(data.get("VERSION_SENSOR_DEFINITIONS", []))
             self.STORED_ENERGY_SENSOR_DEFINITIONS = _normalize_section(data.get("STORED_ENERGY_SENSOR_DEFINITIONS", []))
             self.CYCLE_SENSOR_DEFINITIONS = _normalize_section(data.get("CYCLE_SENSOR_DEFINITIONS", []))
+            self.TOU_SENSOR_DEFINITIONS = _normalize_section(data.get("TOU_SENSOR_DEFINITIONS", []))
 
             self._all_definitions = (
                 self.SENSOR_DEFINITIONS
@@ -588,6 +590,7 @@ class DynessCoordinator(DataUpdateCoordinator):
             + self.VERSION_SENSOR_DEFINITIONS
             + self.STORED_ENERGY_SENSOR_DEFINITIONS
             + self.CYCLE_SENSOR_DEFINITIONS
+            + self.TOU_SENSOR_DEFINITIONS
         )
         dependency_keys_set = {
             dep_key
@@ -818,4 +821,5 @@ class DynessCoordinator(DataUpdateCoordinator):
             "VERSION_SENSOR_DEFINITIONS": _normalize_section(data.get("VERSION_SENSOR_DEFINITIONS", [])),
             "STORED_ENERGY_SENSOR_DEFINITIONS": _normalize_section(data.get("STORED_ENERGY_SENSOR_DEFINITIONS", [])),
             "CYCLE_SENSOR_DEFINITIONS": _normalize_section(data.get("CYCLE_SENSOR_DEFINITIONS", [])),
+            "TOU_SENSOR_DEFINITIONS": _normalize_section(data.get("TOU_SENSOR_DEFINITIONS", [])),
         }

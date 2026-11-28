@@ -53,6 +53,7 @@ _mock_module(
 _mock_module(
     "homeassistant.const",
     CONF_HOST="host",
+    CONF_NAME="name",
     CONF_PORT="port",
     CONF_UNIT_ID="unit_id",
 )

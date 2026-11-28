@@ -3,8 +3,9 @@
     "step": {
       "user": {
         "title": "Connect to Dyness Aquavolt Modbus",
-        "description": "Enter the Modbus TCP connection details",
+        "description": "Enter the Modbus TCP connection details. The device name becomes the entity-id prefix (e.g. 'M1' -> sensor.m1_battery_power).",
         "data": {
+          "name": "Device name",
           "host": "IP Address",
           "port": "Port",
           "unit_id": "Unit ID"
@@ -63,97 +64,261 @@
   },
   "entity": {
     "sensor": {
-      "modbus_protocol_version": { "name": "Modbus Protocol Version" },
-      "rated_power": { "name": "Rated Power" },
-      "ac_output_type": { "name": "AC Output Type" },
-      "serial_number": { "name": "Serial Number" },
-      "dsp1_software_version": { "name": "DSP1 Software Version" },
-      "dsp2_software_version": { "name": "DSP2 Software Version" },
-      "arm_software_version": { "name": "ARM Software Version" },
-      "dsp_internal_firmware": { "name": "DSP Internal Firmware" },
-      "arm_internal_firmware": { "name": "ARM Internal Firmware" },
-      "device_hardware_version": { "name": "Device Hardware Version" },
-      "manufacture": { "name": "Manufacturer" },
-      "power_ratio": { "name": "Power Ratio" },
-      "bms_version": { "name": "BMS Version" },
-      "ac_port_voltage_phase1": { "name": "AC Port Voltage (Phase 1)" },
-      "ac_port_current_phase1": { "name": "AC Port Current (Phase 1)" },
-      "ac_port_frequency_phase1": { "name": "AC Port Frequency (Phase 1)" },
-      "ac_port_power_phase1": { "name": "AC Port Power (Phase 1)" },
-      "ac_port_power_total": { "name": "AC Active Power" },
-      "ac_port_backup_power": { "name": "AC Port Backup Power" },
-      "ac_port_reactive_power": { "name": "AC Reactive Power" },
-      "ac_port_apparent_power": { "name": "AC Apparent Power" },
-      "ac_port_mode": { "name": "AC Port Mode" },
-      "ac_port_voltage_phase2": { "name": "AC Port Voltage (Phase 2)" },
-      "ac_port_current_phase2": { "name": "AC Port Current (Phase 2)" },
-      "ac_port_frequency_phase2": { "name": "AC Port Frequency (Phase 2)" },
-      "ac_port_power_phase2": { "name": "AC Port Power (Phase 2)" },
-      "ac_port_voltage_phase3": { "name": "AC Port Voltage (Phase 3)" },
-      "ac_port_current_phase3": { "name": "AC Port Current (Phase 3)" },
-      "ac_port_frequency_phase3": { "name": "AC Port Frequency (Phase 3)" },
-      "ac_port_power_phase3": { "name": "AC Port Power (Phase 3)" },
-      "battery_voltage": { "name": "Battery Voltage" },
-      "battery_current": { "name": "Battery Current" },
-      "battery_power": { "name": "Battery Power" },
-      "battery_mode": { "name": "Battery Mode" },
-      "inverter_state": { "name": "Inverter State" },
-      "warning_code": { "name": "Warning Code" },
-      "safety_country": { "name": "Safety Country" },
-      "pv_energy_total": { "name": "PV Energy Total" },
-      "pv_energy_day": { "name": "PV Energy Today" },
-      "utility_to_grid_total": { "name": "Utility to Grid Total" },
-      "utility_to_grid_day": { "name": "Utility to Grid Today" },
-      "utility_from_grid_total": { "name": "Utility from Grid Total" },
-      "utility_from_grid_day": { "name": "Utility from Grid Today" },
-      "load_energy_total": { "name": "Load Energy Total" },
-      "load_energy_day": { "name": "Load Energy Today" },
-      "battery_charge_energy_total": { "name": "Battery Charge Energy Total" },
-      "battery_charge_energy_day": { "name": "Battery Charge Energy Today" },
-      "battery_discharge_energy_total": { "name": "Battery Discharge Energy Total" },
-      "battery_discharge_energy_day": { "name": "Battery Discharge Energy Today" },
-      "cpld_code": { "name": "CPLD Code" },
-      "battery_voltage_2": { "name": "Battery 2 Voltage" },
-      "battery_current_2": { "name": "Battery 2 Current" },
-      "battery_power_2": { "name": "Battery 2 Power" },
-      "battery_mode_2": { "name": "Battery 2 Mode" },
-      "utility_voltage_phase1": { "name": "Utility Voltage (Phase 1)" },
-      "utility_current_phase1": { "name": "Utility Current (Phase 1)" },
-      "utility_power_phase1": { "name": "Utility Power (Phase 1)" },
-      "utility_voltage_phase2": { "name": "Utility Voltage (Phase 2)" },
-      "utility_current_phase2": { "name": "Utility Current (Phase 2)" },
-      "utility_power_phase2": { "name": "Utility Power (Phase 2)" },
-      "utility_voltage_phase3": { "name": "Utility Voltage (Phase 3)" },
-      "utility_current_phase3": { "name": "Utility Current (Phase 3)" },
-      "utility_power_phase3": { "name": "Utility Power (Phase 3)" },
-      "utility_frequency": { "name": "Utility Frequency" },
-      "total_utility_power": { "name": "Total Utility Power" },
-      "bms_comm_status": { "name": "BMS Communication Status" },
-      "bms_soc": { "name": "BMS SoC" },
-      "bms_soh": { "name": "BMS SoH" },
-      "battery_strings": { "name": "Battery Strings" },
-      "battery_total_voltage": { "name": "Battery Total Voltage" },
-      "battery_total_current": { "name": "Battery Total Current" },
-      "cycle_times": { "name": "Cycle Times" },
-      "ems_power_set": { "name": "EMS Power Set" },
-      "internal_temperature": { "name": "Internal Temperature" },
-      "radiator_temperature": { "name": "Radiator Temperature" },
-      "module_temperature": { "name": "Module Temperature" },
-      "function_bit_value": { "name": "Function Bit Value" },
-      "bus_voltage": { "name": "Bus Voltage" },
-      "nbus_voltage": { "name": "NBus Voltage" },
-      "firmware_version": { "name": "Firmware Version" },
-      "round_trip_efficiency_total": { "name": "Round Trip Efficiency Total" },
-      "stored_energy": { "name": "Stored Energy" },
-      "solar_power_total": { "name": "Solar Power" },
-      "battery_cycle_count_calc": { "name": "Cycle Count (Calc)" },
-      "firmware_version": { "name": "Firmware Version" },
-      "round_trip_efficiency_total": { "name": "Round Trip Efficiency Total" },
-      "stored_energy": { "name": "Stored Energy" },
-      "solar_power_total": { "name": "Solar Power" },
-      "battery_cycle_count_calc": { "name": "Cycle Count (Calc)" },
-      "ems_power_set_RO": { "name": "EMS Power Set (RO)" },
-      "ems_power_mode_RO": { "name": "EMS Power Mode (RO)", "state": {
+      "modbus_protocol_version": {
+        "name": "Modbus Protocol Version"
+      },
+      "rated_power": {
+        "name": "Rated Power"
+      },
+      "ac_output_type": {
+        "name": "AC Output Type"
+      },
+      "serial_number": {
+        "name": "Serial Number"
+      },
+      "dsp1_software_version": {
+        "name": "DSP1 Software Version"
+      },
+      "dsp2_software_version": {
+        "name": "DSP2 Software Version"
+      },
+      "arm_software_version": {
+        "name": "ARM Software Version"
+      },
+      "dsp_internal_firmware": {
+        "name": "DSP Internal Firmware"
+      },
+      "arm_internal_firmware": {
+        "name": "ARM Internal Firmware"
+      },
+      "device_hardware_version": {
+        "name": "Device Hardware Version"
+      },
+      "manufacture": {
+        "name": "Manufacturer"
+      },
+      "power_ratio": {
+        "name": "Power Ratio"
+      },
+      "bms_version": {
+        "name": "BMS Version"
+      },
+      "ac_port_voltage_phase1": {
+        "name": "AC Port Voltage (Phase 1)"
+      },
+      "ac_port_current_phase1": {
+        "name": "AC Port Current (Phase 1)"
+      },
+      "ac_port_frequency_phase1": {
+        "name": "AC Port Frequency (Phase 1)"
+      },
+      "ac_port_power_phase1": {
+        "name": "AC Port Power (Phase 1)"
+      },
+      "ac_port_power_total": {
+        "name": "AC Active Power"
+      },
+      "ac_port_backup_power": {
+        "name": "AC Port Backup Power"
+      },
+      "ac_port_reactive_power": {
+        "name": "AC Reactive Power"
+      },
+      "ac_port_apparent_power": {
+        "name": "AC Apparent Power"
+      },
+      "ac_port_mode": {
+        "name": "AC Port Mode"
+      },
+      "ac_port_voltage_phase2": {
+        "name": "AC Port Voltage (Phase 2)"
+      },
+      "ac_port_current_phase2": {
+        "name": "AC Port Current (Phase 2)"
+      },
+      "ac_port_frequency_phase2": {
+        "name": "AC Port Frequency (Phase 2)"
+      },
+      "ac_port_power_phase2": {
+        "name": "AC Port Power (Phase 2)"
+      },
+      "ac_port_voltage_phase3": {
+        "name": "AC Port Voltage (Phase 3)"
+      },
+      "ac_port_current_phase3": {
+        "name": "AC Port Current (Phase 3)"
+      },
+      "ac_port_frequency_phase3": {
+        "name": "AC Port Frequency (Phase 3)"
+      },
+      "ac_port_power_phase3": {
+        "name": "AC Port Power (Phase 3)"
+      },
+      "battery_voltage": {
+        "name": "Battery Voltage"
+      },
+      "battery_current": {
+        "name": "Battery Current"
+      },
+      "battery_power": {
+        "name": "Battery Power"
+      },
+      "battery_mode": {
+        "name": "Battery Mode"
+      },
+      "inverter_state": {
+        "name": "Inverter State"
+      },
+      "warning_code": {
+        "name": "Warning Code"
+      },
+      "safety_country": {
+        "name": "Safety Country"
+      },
+      "pv_energy_total": {
+        "name": "PV Energy Total"
+      },
+      "pv_energy_day": {
+        "name": "PV Energy Today"
+      },
+      "utility_to_grid_total": {
+        "name": "Utility to Grid Total"
+      },
+      "utility_to_grid_day": {
+        "name": "Utility to Grid Today"
+      },
+      "utility_from_grid_total": {
+        "name": "Utility from Grid Total"
+      },
+      "utility_from_grid_day": {
+        "name": "Utility from Grid Today"
+      },
+      "load_energy_total": {
+        "name": "Load Energy Total"
+      },
+      "load_energy_day": {
+        "name": "Load Energy Today"
+      },
+      "battery_charge_energy_total": {
+        "name": "Battery Charge Energy Total"
+      },
+      "battery_charge_energy_day": {
+        "name": "Battery Charge Energy Today"
+      },
+      "battery_discharge_energy_total": {
+        "name": "Battery Discharge Energy Total"
+      },
+      "battery_discharge_energy_day": {
+        "name": "Battery Discharge Energy Today"
+      },
+      "cpld_code": {
+        "name": "CPLD Code"
+      },
+      "battery_voltage_2": {
+        "name": "Battery 2 Voltage"
+      },
+      "battery_current_2": {
+        "name": "Battery 2 Current"
+      },
+      "battery_power_2": {
+        "name": "Battery 2 Power"
+      },
+      "battery_mode_2": {
+        "name": "Battery 2 Mode"
+      },
+      "utility_voltage_phase1": {
+        "name": "Utility Voltage (Phase 1)"
+      },
+      "utility_current_phase1": {
+        "name": "Utility Current (Phase 1)"
+      },
+      "utility_power_phase1": {
+        "name": "Utility Power (Phase 1)"
+      },
+      "utility_voltage_phase2": {
+        "name": "Utility Voltage (Phase 2)"
+      },
+      "utility_current_phase2": {
+        "name": "Utility Current (Phase 2)"
+      },
+      "utility_power_phase2": {
+        "name": "Utility Power (Phase 2)"
+      },
+      "utility_voltage_phase3": {
+        "name": "Utility Voltage (Phase 3)"
+      },
+      "utility_current_phase3": {
+        "name": "Utility Current (Phase 3)"
+      },
+      "utility_power_phase3": {
+        "name": "Utility Power (Phase 3)"
+      },
+      "utility_frequency": {
+        "name": "Utility Frequency"
+      },
+      "total_utility_power": {
+        "name": "Total Utility Power"
+      },
+      "bms_comm_status": {
+        "name": "BMS Communication Status"
+      },
+      "bms_soc": {
+        "name": "BMS SoC"
+      },
+      "bms_soh": {
+        "name": "BMS SoH"
+      },
+      "battery_strings": {
+        "name": "Battery Strings"
+      },
+      "battery_total_voltage": {
+        "name": "Battery Total Voltage"
+      },
+      "battery_total_current": {
+        "name": "Battery Total Current"
+      },
+      "cycle_times": {
+        "name": "Cycle Times"
+      },
+      "internal_temperature": {
+        "name": "Internal Temperature"
+      },
+      "radiator_temperature": {
+        "name": "Radiator Temperature"
+      },
+      "module_temperature": {
+        "name": "Module Temperature"
+      },
+      "function_bit_value": {
+        "name": "Function Bit Value"
+      },
+      "bus_voltage": {
+        "name": "Bus Voltage"
+      },
+      "nbus_voltage": {
+        "name": "NBus Voltage"
+      },
+      "firmware_version": {
+        "name": "Firmware Version"
+      },
+      "round_trip_efficiency_total": {
+        "name": "Round Trip Efficiency Total"
+      },
+      "stored_energy": {
+        "name": "Stored Energy"
+      },
+      "solar_power_total": {
+        "name": "Solar Power"
+      },
+      "battery_cycle_count_calc": {
+        "name": "Cycle Count (Calc)"
+      },
+      "ems_power_set_RO": {
+        "name": "EMS Power Set (RO)"
+      },
+      "ems_power_mode_RO": {
+        "name": "EMS Power Mode (RO)",
+        "state": {
           "255": "Stopped",
           "1": "Auto",
           "2": "Charge PV",
@@ -166,10 +331,14 @@
           "9": "Buy Power",
           "10": "Sell Power",
           "11": "Charge-BAT",
-          "12": "Discharge-BAT"
+          "12": "Discharge-BAT",
+          "16": "Charge Only Self-use",
+          "17": "Self-use"
         }
       },
-      "operation_mode_RO": { "name": "Operation Mode (RO)", "state": {
+      "operation_mode_RO": {
+        "name": "Operation Mode (RO)",
+        "state": {
           "0": "Self Use",
           "1": "Off Grid",
           "2": "Backup",
@@ -178,34 +347,53 @@
           "7": "Dynamic Trade"
         }
       },
-      "feed_power_para_RO": { "name": "Feed Power Para (RO)" },
-      "batt_charge_curr_max_RO": { "name": "Battery Charge Current Max (RO)" },
-      "batt_discharge_curr_max_RO": { "name": "Battery Discharge Current Max (RO)" },
-      "router_ssid_RO": { "name": "Router SSID (RO)" },
-      "router_password_RO": { "name": "Router Password (RO)" },
-      "router_encryption_RO": { "name": "Router Encryption (RO)" },
-      "manufacturer_RO": { "name": "Manufacturer (RO)" },
-      "tou_start_time_1": { "name": "TOU Start Time 1" },
-      "tou_start_time_2": { "name": "TOU Start Time 2" },
-      "tou_start_time_3": { "name": "TOU Start Time 3" },
-      "tou_start_time_4": { "name": "TOU Start Time 4" },
-      "tou_work_week_1": { "name": "TOU Work Week 1" },
-      "tou_work_week_2": { "name": "TOU Work Week 2" },
-      "tou_work_week_3": { "name": "TOU Work Week 3" },
-      "tou_work_week_4": { "name": "TOU Work Week 4" },
-      "tou_peak_power": { "name": "TOU Peak Power" },
-      "tou_energy_today": { "name": "TOU Energy Today" },
-      "exit_mode_set": { "name": "Exit Mode Set", "state": {
-          "0": "Auto",
-          "1": "Manual",
-          "2": "Force Off",
-          "3": "Emergency"
-        }
+      "feed_power_para_RO": {
+        "name": "Feed Power Para (RO)"
+      },
+      "batt_charge_curr_max_RO": {
+        "name": "Battery Charge Current Max (RO)"
+      },
+      "batt_discharge_curr_max_RO": {
+        "name": "Battery Discharge Current Max (RO)"
+      },
+      "router_ssid_RO": {
+        "name": "Router SSID (RO)"
+      },
+      "router_password_RO": {
+        "name": "Router Password (RO)"
+      },
+      "router_encryption_RO": {
+        "name": "Router Encryption (RO)"
+      },
+      "manufacturer_RO": {
+        "name": "Manufacturer (RO)"
+      },
+      "dsp_svn_version": {
+        "name": "DSP SVN Version"
+      },
+      "arm_svn_version": {
+        "name": "ARM SVN Version"
+      },
+      "tou_schedule_1": {
+        "name": "TOU Schedule 1"
+      },
+      "tou_schedule_2": {
+        "name": "TOU Schedule 2"
+      },
+      "tou_schedule_3": {
+        "name": "TOU Schedule 3"
+      },
+      "tou_schedule_4": {
+        "name": "TOU Schedule 4"
       }
     },
     "binary_sensor": {
-      "modbus_connection": { "name": "Modbus Connection" },
-      "bms_comm_ok": { "name": "BMS Communication OK" }
+      "modbus_connection": {
+        "name": "Modbus Connection"
+      },
+      "bms_comm_ok": {
+        "name": "BMS Communication OK"
+      }
     },
     "select": {
       "operation_mode": {
@@ -234,26 +422,122 @@
           "buy_power": "Buy Power",
           "sell_power": "Sell Power",
           "charge_bat": "Charge-BAT",
-          "discharge_bat": "Discharge-BAT"
+          "discharge_bat": "Discharge-BAT",
+          "charge_only_self_use": "Charge Only Self-use",
+          "self_use": "Self-use"
+        }
+      },
+      "exit_mode_set": {
+        "name": "Exit Mode Set",
+        "state": {
+          "self_use": "Self Use",
+          "off_grid": "Off Grid",
+          "backup": "Backup",
+          "tou": "Time of Use",
+          "battery_priority": "Battery Priority",
+          "ai_optimization": "AI Optimization",
+          "restore_previous": "Restore Previous"
         }
       }
     },
     "switch": {
-      "backup_function": { "name": "Backup Function" }
+      "backup_function": {
+        "name": "Backup Function"
+      }
     },
     "number": {
-      "max_charge_current": { "name": "Max Charge Current" },
-      "max_discharge_current": { "name": "Max Discharge Current" },
-      "charge_to_soc": { "name": "Charge to SoC" },
-      "ems_power_set": { "name": "EMS Power Set" },
-      "port_number_1": { "name": "Port Number 1" },
-      "modbus_address": { "name": "Modbus Address" },
-      "modbus_baud_rate": { "name": "Modbus Baud Rate" }
+      "max_charge_current": {
+        "name": "Max Charge Current"
+      },
+      "max_discharge_current": {
+        "name": "Max Discharge Current"
+      },
+      "charge_to_soc": {
+        "name": "Charge to SoC"
+      },
+      "ems_power_set": {
+        "name": "EMS Power Set"
+      },
+      "port_number_1": {
+        "name": "Port Number 1"
+      },
+      "modbus_address": {
+        "name": "Modbus Address"
+      },
+      "modbus_baud_rate": {
+        "name": "Modbus Baud Rate"
+      },
+      "tou_start_time_1": {
+        "name": "TOU Slot 1 Start Time (HHMM)"
+      },
+      "tou_end_time_1": {
+        "name": "TOU Slot 1 End Time (HHMM)"
+      },
+      "tou_work_week_1": {
+        "name": "TOU Slot 1 Work Week"
+      },
+      "tou_start_time_2": {
+        "name": "TOU Slot 2 Start Time (HHMM)"
+      },
+      "tou_end_time_2": {
+        "name": "TOU Slot 2 End Time (HHMM)"
+      },
+      "tou_work_week_2": {
+        "name": "TOU Slot 2 Work Week"
+      },
+      "tou_start_time_3": {
+        "name": "TOU Slot 3 Start Time (HHMM)"
+      },
+      "tou_end_time_3": {
+        "name": "TOU Slot 3 End Time (HHMM)"
+      },
+      "tou_work_week_3": {
+        "name": "TOU Slot 3 Work Week"
+      },
+      "tou_start_time_4": {
+        "name": "TOU Slot 4 Start Time (HHMM)"
+      },
+      "tou_end_time_4": {
+        "name": "TOU Slot 4 End Time (HHMM)"
+      },
+      "tou_work_week_4": {
+        "name": "TOU Slot 4 Work Week"
+      },
+      "soc_force_charge_start": {
+        "name": "Force Charge Start SoC"
+      },
+      "soc_force_charge_stop": {
+        "name": "Force Charge Stop SoC"
+      },
+      "ems_power_mode_effective_time": {
+        "name": "EMS Power Mode Effective Time"
+      },
+      "tou_power_1": {
+        "name": "TOU Slot 1 Power"
+      },
+      "tou_power_2": {
+        "name": "TOU Slot 2 Power"
+      },
+      "tou_power_3": {
+        "name": "TOU Slot 3 Power"
+      },
+      "tou_power_4": {
+        "name": "TOU Slot 4 Power"
+      }
     },
     "button": {
-      "reset_inverter": { "name": "Reset Inverter" },
-      "start_ac_port_connection": { "name": "Start AC Port Connection" },
-      "stop_ac_port_connection": { "name": "Stop AC Port Connection" }
+      "reset_inverter": {
+        "name": "Reset Inverter"
+      },
+      "start_ac_port_connection": {
+        "name": "Start AC Port Connection"
+      },
+      "stop_ac_port_connection": {
+        "name": "Stop AC Port Connection"
+      },
+      "clear_all_economic_mode": {
+        "name": "Clear All Economic Mode"
+      }
     }
   }
 }

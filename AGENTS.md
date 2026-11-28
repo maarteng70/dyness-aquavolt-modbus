@@ -20,9 +20,11 @@ released. Keep this file updated when the process changes.
 4. `rell.bat` regenerates `ENTITY_MAP.md` (step 2b) before committing.
 5. Release notes are printed by `rell.bat` and pasted into the GitHub release;
    the GitHub release title is the release name, not the tag.
-6. **Version scheme:** `v<year>.<month>.<sequence>`, e.g. `v2026.11.5`, and the
-   sequence only ever increases within the month (`v2026.11.10` follows
-   `v2026.11.9`). Always lowercase `v`.
+6. **Version scheme:** `v<year>.<month>.<sequence>` where the sequence keeps
+   increasing within the month (e.g. `v2026.11.5` → `v2026.11.10`). Always
+   lowercase `v`. The same number must be set as `version` in
+   `custom_components/dyness_modbus/manifest.json`; HACS compares that field,
+   not the git tag.
 7. **Every time `rell.bat` is prepared, add the release to `RELEASE_NOTES.md`**
    (newest first) with the confirmed release title, e.g.
    `## v2026.11.10 — TOU settings and power cap`. `rell.bat` fails if that

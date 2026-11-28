@@ -1,11 +1,6 @@
 # Release notes — Dyness Aquavolt Modbus
 
-Version scheme: `v<year>.<month>.<sequence>` where the sequence keeps increasing
-within the month (e.g. `v2026.11.5` → `v2026.11.10`). The same number must be set
-as `version` in `custom_components/dyness_modbus/manifest.json`; HACS compares
-that field, not the git tag.
-
-Newest release first.
+Newest release first. Version scheme and release process: see `AGENTS.md`.
 
 ---
 
@@ -24,7 +19,7 @@ Newest release first.
   the YAML and in Python).
 - **Duplicate `ems_power_set`** entity (registered as both sensor and number).
 
-### Added — TOU (economic mode)
+### Added — TOU (time of use) 
 - **Slots 1–4**, registers 27515–27530: start time, end time (HHMM), battery
   power in W (negative = charge, positive = discharge) and the weekday bitmask
   (`0xFF` high byte = enabled, bits 0–6 = Sunday…Saturday).

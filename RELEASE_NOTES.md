@@ -1,6 +1,6 @@
 # Release notes — Dyness Aquavolt Modbus
 
-Newest release first. Version scheme and release process: see `AGENTS.md`.
+Newest release first.
 
 ---
 
